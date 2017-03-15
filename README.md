@@ -1,7 +1,12 @@
-# README #
+import sys
 
-This README would normally document whatever steps are necessary to get your application up and running.
+# Gather our code in a main() function
+def main():
+    print 'Hello there', sys.argv[1]
+    # Command line args are in sys.argv[1], sys.argv[2] ...
+    # sys.argv[0] is the script name itself and can be ignored
 
->>>a=66
->>a
->>>print 'hello'
+# Standard boilerplate to call the main() function to begin
+# the program.
+if __name__ == '__main__':
+    main()
