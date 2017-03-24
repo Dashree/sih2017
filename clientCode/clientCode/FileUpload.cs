@@ -10,14 +10,15 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
-//using PQScan.BarcodeScanner;
-
+using MessagingToolkit.QRCode;
+using System.Runtime.InteropServices;
 namespace client
 {
     public partial class FileUpload : Form
     {
         public object BarcodeType { get; private set; }
-
+        private string collegeName, examcode;
+        string url = "http:\\";
         public FileUpload()
         {
             InitializeComponent();
@@ -32,13 +33,6 @@ namespace client
         {
 
         }
-        //private byte[] GetBytesFromImage(String imageFile)
-        //{
-        //    MemoryStream ms = new MemoryStream();
-        //    Image img = Image.FromFile(imageFile);
-        //    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-        //    return ms.ToArray();
-        //}
 
         private byte[] ReadFileBytes(String filepath)
         {
@@ -58,10 +52,10 @@ namespace client
             return buffer;
         }
 
-        ////private int hash_send()
-        ////{ 
+        //private int hash_send()
+        //{ 
 
-        ////}
+        //}
         private byte[] Hash_Compute(string filePath)
         {
             byte[] byte_code = this.ReadFileBytes(filePath);
@@ -71,28 +65,28 @@ namespace client
         
             return hash;
         }
-        //private void UploadFile(string filePath, string image_name)
-        //{
-        //    byte[] image = GetBytesFromImage(filePath);
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://");
-        //    request.Method = "POST";
-        //    request.ContentType = "byte"; // to be changed
-        //    request.ContentLength = image.Length;
-        //    request.KeepAlive = false;
-        //    request.AllowAutoRedirect = false;
-        //   // request.AllowWriteStreamBuffering = false;
-        //    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //    if (response.StatusCode == HttpStatusCode.OK)
-        //    {
-        //        WebClient client = new WebClient();
-        //        byte[] serverResponse = client.UploadFile("http://", image_name);
-        //        ProgressBar progressbar1 = new ProgressBar();
-        //        progressbar1.Enabled = true;
-        //       // progressbar1.Value = ;
-        //        Controls.Add(progressbar1);
-        //    }
-        //}
-        int x = 0;
+        private void UploadInfo(string filePath, string image_name)
+        {
+            //    byte[] image = GetBytesFromImage(filePath);
+           // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            //    request.Method = "POST";
+            //    request.ContentType = "byte"; // to be changed
+            //    request.ContentLength = image.Length;
+            //    request.KeepAlive = false;
+            //    request.AllowAutoRedirect = false;
+            //   // request.AllowWriteStreamBuffering = false;
+            // HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+           // if (response.StatusCode == HttpStatusCode.OK)
+           // {
+                WebClient client = new WebClient();
+                byte[] serverResponse = client.UploadFile(url, image_name);
+                ProgressBar progressbar1 = new ProgressBar();
+                progressbar1.Enabled = true;
+               // progressbar1.Value = ;
+                Controls.Add(progressbar1);
+           // }
+         }
+int x = 0;
         private void button(String imgPath)
         {
             Button button1 = new Button();
@@ -108,28 +102,17 @@ namespace client
         }
 
 
-        //private void QRCodeScan(string img, string examcode)
-        //{
-        //    BarcodeResult[] results = BarCodeScanner.Scan(img, BarCodeType.QRCode);
-        //    foreach(BarcodeResult result in results)
-        //    {
-        //        if(textBox2.Text == result.ToString())
-        //        {
-        //           // Hash_Compute(filePath);
-        //        }
-        //    } 
-        //}
+        private void QRCodeScan(string img)
+        {
+            Bitmap cards = new Bitmap(img);
+            Rectangle srcRect = new Rectangle(0, 0, 10, 10);
+            Bitmap card = (Bitmap)cards.Clone(srcRect, cards.PixelFormat);
+        }
 
         private void Files_Click(object sender, EventArgs e)
         {
             
             FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
-           
-            //openFolder1.InitialDictionary = @"c:\\";
-            //openFolder1.Filter = "Image Files(*.jpg)|*.jpg";
-            //openFolder1.FilterIndex = 1;
-            //openFolder1.Multiselect = true;
-            //openFolder1.RestoreDirectory = true;
             if (openFolder1.ShowDialog() == DialogResult.OK)
             {
                     string folderPath = openFolder1.SelectedPath;
@@ -141,12 +124,12 @@ namespace client
                         string FilePath = path.FullName;
                         string FileName = Path.GetFileNameWithoutExtension(FilePath);
                         button(FilePath);
-                        // QRCodeScan(img);
+                        QRCodeScan(img);
                         byte[] hash = Hash_Compute(FilePath);
                    
                         //send hash to server
                         //if at server skip file
-                            //else call button() and uploadFile()
+                            //else call button() and uploadInfo()
                      }
 
 
@@ -157,6 +140,16 @@ namespace client
                 // if yes, check if qrcode text matches examcode
                 //    if yes, calculate hash of the
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            collegeName = textBox1.Text;
+        }
+
+        private void textBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+            examcode = textBox2.Text;
         }
     }
 }
