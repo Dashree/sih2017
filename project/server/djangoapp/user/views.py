@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from .forms import RegisterUser
+from upload import views
 
 # Create your views here.
 
@@ -36,7 +37,7 @@ class RegisterUserView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('admin/')
+                    return redirect('http://127.0.0.1:8000/upload/list/')
 
         return render(request, self.template_name, {'form':form})
 
@@ -51,7 +52,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 
-                return redirect('admin/')
+                return redirect('http://127.0.0.1:8000/upload/list/')
             else:
                 return render(request, 'login.html', {'error_message': 'Your account has been disabled'})
         else:
