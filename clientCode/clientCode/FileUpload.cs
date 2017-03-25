@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Net;
 using MessagingToolkit.QRCode;
-using System.Runtime.InteropServices;
+
 namespace client
 {
     public partial class FileUpload : Form
@@ -62,10 +62,11 @@ namespace client
             byte[] hash;
             SHA512 code = new SHA512Managed();
             hash = code.ComputeHash(byte_code);
-        
+            
             return hash;
         }
-        private void UploadInfo(string filePath, string image_name)
+      
+        private bool UploadInfo(string filePath, string image_name, byte[] hash)
         {
             //    byte[] image = GetBytesFromImage(filePath);
            // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -79,14 +80,37 @@ namespace client
            // if (response.StatusCode == HttpStatusCode.OK)
            // {
                 WebClient client = new WebClient();
-                byte[] serverResponse = client.UploadFile(url, image_name);
-                ProgressBar progressbar1 = new ProgressBar();
-                progressbar1.Enabled = true;
-               // progressbar1.Value = ;
-                Controls.Add(progressbar1);
-           // }
-         }
-int x = 0;
+                byte[] hashResponse = client.UploadData(url, hash);
+                if(hashResponse.ToString() == "true")
+                 {
+                      byte[] serverResponse = client.UploadFile(url, image_name);
+                      progressBar();
+                      return true;
+                 }
+                else
+                 {
+                    return false;
+                 }
+                  
+
+            // }
+        }
+        int i = 0;
+        void progressBar()
+        {
+            ProgressBar progressbar1 = new ProgressBar();
+            progressbar1.Enabled = true;
+            progressbar1.Value = i + 1;
+            progressbar1.Location = new Point(318,90);
+            Controls.Add(progressbar1);
+            label.Enabled = true;
+            label.Visible = true;
+            label.Location = new Point(318,75);
+            label.Text = progressbar1.Value + " images uploaded";
+            Controls.Add(label);
+            i++;
+        }
+        int x = 0;
         private void button(String imgPath)
         {
             Button button1 = new Button();
@@ -96,17 +120,23 @@ int x = 0;
             x = x + 80;
             button1.BackgroundImage = Image.FromFile(imgPath);
             button1.BackgroundImageLayout = ImageLayout.Zoom;
-            button1.ImageAlign = ContentAlignment.MiddleCenter;
+            button1.ImageAlign = ContentAlignment.TopLeft;
             Controls.Add(button1);
             this.AutoScroll = true;
+            //progressBar();
+            
         }
 
 
-        private void QRCodeScan(string img)
+        private bool QRCodeScan(string img)
         {
-            Bitmap cards = new Bitmap(img);
-            Rectangle srcRect = new Rectangle(0, 0, 10, 10);
-            Bitmap card = (Bitmap)cards.Clone(srcRect, cards.PixelFormat);
+            //Bitmap cards = new Bitmap(img);
+            //Rectangle srcRect = new Rectangle(0, 0, 10, 10);
+            //Bitmap card = (Bitmap)cards.Clone(srcRect, cards.PixelFormat);
+            //return true;
+            ////if(match found)
+            ////    return true;
+            ////return false;
         }
 
         private void Files_Click(object sender, EventArgs e)
@@ -115,6 +145,7 @@ int x = 0;
             FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
             if (openFolder1.ShowDialog() == DialogResult.OK)
             {
+                   
                     string folderPath = openFolder1.SelectedPath;
                     string[] Images = Directory.GetFiles(folderPath, "*.jpg"); //returns a file list from current directory
                     MessageBox.Show(Images.Length.ToString());
@@ -123,14 +154,20 @@ int x = 0;
                         FileInfo path = new FileInfo(img.ToString());
                         string FilePath = path.FullName;
                         string FileName = Path.GetFileNameWithoutExtension(FilePath);
-                        button(FilePath);
-                        QRCodeScan(img);
-                        byte[] hash = Hash_Compute(FilePath);
-                   
-                        //send hash to server
-                        //if at server skip file
-                            //else call button() and uploadInfo()
-                     }
+                        bool Qr = QRCodeScan(img);
+                        if (Qr == true)
+                        {
+                            byte[] hash = Hash_Compute(FilePath);
+                            bool uploadResponse = UploadInfo(FilePath, FileName, hash);
+                            if (uploadResponse == true)
+                            button(FilePath);
+                    }
+                       
+                    //UploadInfo(FilePath, FileName);
+                    //send hash to server
+                    //if at server skip file
+                    //else call button() and uploadInfo()
+                }
 
 
 
@@ -145,6 +182,11 @@ int x = 0;
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             collegeName = textBox1.Text;
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void textBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)

@@ -12,8 +12,8 @@ using System.Net;
 namespace client
 {
     public partial class LogIn : Form
-    {
-       private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata"};
+    {   string url ="http:\\";
+        private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata"};
         private string[] password = { "123$", "qwer", "asdf", "zxcv" };
         public LogIn()
         {
@@ -24,14 +24,22 @@ namespace client
         {
             
         }
-        //private int verify_credentials(string user, string pass)
-        //{
-        //    NetworkCredential verify = new NetworkCredential(user, pass);
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://");
-        //    
-        //    //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        //    //response.Close();
-        //}
+       // private int verification(string user, string pass)
+       // {
+       //     WebClient verify = new WebClient();
+       //     byte[] verifyResponse1 = verify.UploadFile(url, user);
+       //     if(verifyResponse1.ToString() == "true")
+       //     {
+       //         byte[] verifyResponse2 = verify.UploadFile(url, pass);
+       //         if (verifyResponse2.ToString() == "true")
+       //         {
+       //             return 1;
+       //         }
+       //         return 0;
+                
+       //     }
+       //     return 0;
+       //}
 
         private int verify(string pass, int j)
         {
@@ -44,12 +52,12 @@ namespace client
         private void button1_Click(object sender, EventArgs e)
         {
             //label3.Visible = false;
-            //int flag = verify_credentials(textBox1.Text, textBox2.Text);
+            //int flag = verification(textBox1.Text, textBox2.Text);
             //if (flag == 1)
             //{
             //    this.Hide(); // to Hide Form1
-            //    To open the Form2
-            //    FileUpload upload = new FileUpload();
+            //    //To open the Form2
+            //    client.FileUpload upload = new FileUpload();
             //    upload.Show();
             //    textBox1.Clear();
             //    textBox2.Clear();
