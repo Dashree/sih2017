@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+#from upload.views import url
 
 urlpatterns = [
+    
     url(r'^upload/', include('upload.urls')),
     url(r'^admin/', admin.site.urls),
+   # url(r'^register/', include('upload.registrations_form.html'))
 ]
