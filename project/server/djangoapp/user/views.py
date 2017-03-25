@@ -3,15 +3,15 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
-from .forms import UserForm
+from .forms import RegisterUser
 
 # Create your views here.
 
 def index(request):
     return HttpResponse("Learning to upload and create database.")
 
-class UserFormView(View):
-    form_class = UserForm
+class RegisterUserView(View):
+    form_class = RegisterUser
     template_name='registrations_form.html'
 
     def get(self, request):             #display blank form

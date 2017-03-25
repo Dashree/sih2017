@@ -19,7 +19,7 @@ from django.contrib import admin
 
 urlpatterns = [
     
-    url(r'^user/', include('users.urls')),
+    url(r'^user/', include('user.urls')),
     url(r'^admin/', admin.site.urls),
    # url(r'^register/', include('upload.registrations_form.html'))
 ]
