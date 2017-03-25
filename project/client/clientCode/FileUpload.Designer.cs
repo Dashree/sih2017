@@ -74,11 +74,11 @@
             // 
             // Files
             // 
-            this.Files.Location = new System.Drawing.Point(206, 90);
+            this.Files.Location = new System.Drawing.Point(166, 90);
             this.Files.Name = "Files";
-            this.Files.Size = new System.Drawing.Size(75, 23);
+            this.Files.Size = new System.Drawing.Size(142, 23);
             this.Files.TabIndex = 4;
-            this.Files.Text = "UPLOAD";
+            this.Files.Text = "Select File and UPLOAD";
             this.Files.UseVisualStyleBackColor = true;
             this.Files.Click += new System.EventHandler(this.Files_Click);
             // 
