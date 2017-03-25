@@ -1,21 +1,60 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.views.generic import View
+from .forms import UserForm
 
 # Create your views here.
 
 def index(request):
     return HttpResponse("Learning to upload and create database.")
 
-##
-##def get_ip_address(request):
-##    """ use requestobject to fetch client machine's IP Address """
-##    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-##    if x_forwarded_for:
-##        ip = x_forwarded_for.split(',')[0]
-##    else:
-##        ip = request.META.get('REMOTE_ADDR')    ### Real IP address of client Machine
-##    return ip
-##
-##def home(request):
-##    """ your vies to handle http request """
-##    ip_address = get_ip_address(request)
+class UserFormView(View):
+    form_class = UserForm
+    template_name='registrations_form.html'
+
+    def get(self, request):             #display blank form
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form' : form})
+
+
+    def post(self, request):            #process form data
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            #returns User objects if credantials are correct
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('admin/')
+
+        return render(request, self.template_name, {'form':form})
+
+    
+
+def login_user(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                
+                return redirect('admin/')
+            else:
+                return render(request, 'login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'login.html', {'error_message': 'Invalid login'})
+    return render(request, 'login.html')
+
