@@ -10,9 +10,11 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
+
 using com.google.zxing;
 using com.google.zxing.common;
 using com.google.zxing.qrcode;
+
 namespace client
 {
     public partial class FileUpload : Form
@@ -20,6 +22,9 @@ namespace client
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
         string url = "http:\\";
+        int x = 0;
+        int i = 0;
+        
         public FileUpload()
         {
             InitializeComponent();
@@ -52,15 +57,7 @@ namespace client
             MessageBox.Show(buffer.ToString());
             return buffer;
         }
-        //public byte[] ReadFileBytes(System.Drawing.Image imageIn)
-        //{
-        //    using (var ms = new MemoryStream())
-        //    {
-        //        imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-        //        return ms.ToArray();
-        //    }
-        //}
-
+        
         private byte[] Hash_Compute(String FilePath)
         {
             byte[] byte_code = this.ReadFileBytes(FilePath);
@@ -100,7 +97,7 @@ namespace client
 
             // }
         }
-        int i = 0;
+        
         void progressBar()
         {
             ProgressBar progressbar1 = new ProgressBar();
@@ -115,7 +112,7 @@ namespace client
             Controls.Add(label);
             i++;
         }
-        int x = 0;
+        
         private void button(String imgPath)
         {
             Button button1 = new Button();
@@ -200,7 +197,7 @@ namespace client
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            collegeName = textBox1.Text;
+            collegeName = CollegeIdTxt.Text;
         }
 
         private void progressBar1_Click(object sender, EventArgs e)
@@ -209,7 +206,12 @@ namespace client
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            examcode = textBox2.Text;
+            examcode = ExamIdTxt.Text;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
