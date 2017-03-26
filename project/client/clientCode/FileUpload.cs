@@ -32,6 +32,9 @@ namespace client
         {
             InitializeComponent();
             this.uploadUrl = this.cServer + this.cUploadUrl;
+            // [NITIN] Temporarily hardcode image list directory to c:\temp 
+            // later ImageFolder path will be set from the FileOpenDialog
+            // For testing copy the images to this directory.
             this.ImgeFolder.Text = cImageListPath;
         }
 
@@ -182,17 +185,12 @@ namespace client
             examcode = ExamIdTxt.Text;
         }
 
-        private List<String> GetFileList(String dirpath)
-        {
-            List<String> filelist = new List<String>();
-            return filelist;
-        }
-
         private void StartUploadClick(object sender, EventArgs e)
         {
             String dirpath = ImgeFolder.Text;
             // find image file list in the directory
-            List<String> filelist = this.GetFileList(dirpath);
+
+            string[] filelist = Directory.GetFiles(dirpath);
             
             WebClient client = new WebClient();
             
