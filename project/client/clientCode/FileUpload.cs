@@ -21,8 +21,8 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string cServer = "http://localhost";
-        string cUploadUrl = "/upload/list";
+        string cServer = "http://localhost:8000";
+        string cUploadUrl = "/upload/list/";
         string cImageListPath = @"c:\temp";
         String uploadUrl;
         int x = 0;
