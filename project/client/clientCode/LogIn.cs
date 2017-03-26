@@ -12,7 +12,7 @@ using System.Net;
 namespace client
 {
     public partial class LogIn : Form
-    {   string url ="http:\\";
+    {   string url = "http://127.0.0.1:8000/user/login/";
         private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata"};
         private string[] password = { "123$", "qwer", "asdf", "zxcv" };
         public LogIn()
@@ -24,21 +24,20 @@ namespace client
         {
             
         }
-        // private int verification(string user, string pass)
-        // {
-        //     WebClient verify = new WebClient();
-        //     byte[] verifyResponse1 = verify.UploadFile(url, user);
-        //     if(verifyResponse1.ToString() == "true")
-        //     {
-        //         byte[] verifyResponse2 = verify.UploadFile(url, pass);
-        //         if (verifyResponse2.ToString() == "true")
-        //         {
-        //             return 1;
-        //         }
-        //         return 0;
-
-        //     }
-        //     return 0;
+        //private int verification(string username, string password)
+        //{
+        //    WebClient verify = new WebClient();
+        //    byte[] verifyResponse1 = verify.UploadFile(url, username);
+        //    if (verifyResponse1.ToString() == "true")
+        //    {
+        //        byte[] verifyResponse2 = verify.UploadFile(url, password);
+        //        if (verifyResponse2.ToString() == "true")
+        //        {
+        //            return 1;
+        //        }
+        //        return 0;
+        //    }
+        //    return 0;
         //}
 
         private int verify(string pass, int j)
