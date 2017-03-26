@@ -6,12 +6,12 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("X-Gen OMR")]
-[assembly: AssemblyDescription("Client")]
+[assembly: AssemblyTitle("X-Gen OMR Client")]
+[assembly: AssemblyDescription("OMR sheet uploads for X-Gen")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("X-Gen Team")]
-[assembly: AssemblyProduct("X-Gen OMR")]
-[assembly: AssemblyCopyright("X-Gen Team")]
+[assembly: AssemblyCompany("X-Gen Smart India Hackathon Team")]
+[assembly: AssemblyProduct("X-Gen OMR Management")]
+[assembly: AssemblyCopyright("X-Gen Smart India Hackathon Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6ea9fec1-f3e4-45fa-a572-c30605e5fd78")]
+[assembly: Guid("8df97661-c360-4ccf-9be1-eba4b3851bb1")]
 
 // Version information for an assembly consists of the following four values:
 //
