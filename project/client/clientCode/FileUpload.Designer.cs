@@ -89,16 +89,6 @@
             this.UploadBtn.UseVisualStyleBackColor = true;
             this.UploadBtn.Click += new System.EventHandler(this.StartUploadClick);
             // 
-            // label
-            // 
-            this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(608, 138);
-            this.label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(0, 20);
-            this.label.TabIndex = 5;
-            this.label.Visible = false;
-            // 
             // ImgeFolder
             // 
             this.ImgeFolder.Location = new System.Drawing.Point(162, 138);
@@ -123,7 +113,7 @@
             this.DirDialogBtn.Name = "DirDialogBtn";
             this.DirDialogBtn.Size = new System.Drawing.Size(75, 23);
             this.DirDialogBtn.TabIndex = 8;
-            this.DirDialogBtn.Text = "...";
+            this.DirDialogBtn.Text = "***";
             this.DirDialogBtn.UseVisualStyleBackColor = true;
             // 
             // FileUpload
@@ -140,7 +130,7 @@
             this.Controls.Add(this.CollegeIdLabel);
             this.Controls.Add(this.ExamIdTxt);
             this.Controls.Add(this.CollegeIdTxt);
-            this.Enabled = false;
+            this.Enabled = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FileUpload";

@@ -21,15 +21,18 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string server = "http://localhost";
-        string uploadUrl = "/upload/list";
+        string cServer = "http://localhost";
+        string cUploadUrl = "/upload/list";
+        string cImageListPath = @"c:\temp";
+        String uploadUrl;
         int x = 0;
         int i = 0;
         
         public FileUpload()
         {
             InitializeComponent();
-            this.uploadUrl = this.server + this.uploadUrl;
+            this.uploadUrl = this.cServer + this.cUploadUrl;
+            this.ImgeFolder.Text = cImageListPath;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
