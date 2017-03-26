@@ -89,8 +89,8 @@ namespace client
             // byte[] hashResponse = webclient.UploadData(url, hash);
             // if (hashResponse.ToString() == "true")
             // {
-            webclient.Headers.Add("User-Agent: Other");
-            byte[] serverResponse = webclient.UploadFile(url1, filePath);
+            //  webclient.Headers.Add("User-Agent: Other");
+                byte[] serverResponse = webclient.UploadFile(url1, filePath);
             //    progressBar();
                 return true;
            // }
@@ -165,7 +165,8 @@ namespace client
                 {
                     FileInfo path = new FileInfo(img.ToString());
                     string FilePath = path.FullName;
-                    string FileName = Path.GetFileNameWithoutExtension(FilePath);
+                   string FileName = Path.GetFileNameWithoutExtension(FilePath);
+                   
                     bool Qr = QRCodeScan(FilePath);
                     if (Qr == true)
                     {
