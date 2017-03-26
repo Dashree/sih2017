@@ -19,7 +19,7 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string url = "http:\\";
+        string url1 = "http://127.0.0.1:8000/upload/list/";
         public FileUpload()
         {
             InitializeComponent();
@@ -71,7 +71,7 @@ namespace client
             return hash;
         }
 
-        private bool UploadInfo(string filePath, string image_name, byte[] hash)
+        private bool UploadInfo(string filePath, string image_name)
         {
             //    byte[] image = GetBytesFromImage(filePath);
             // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -84,18 +84,20 @@ namespace client
             // HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             // if (response.StatusCode == HttpStatusCode.OK)
             // {
-            WebClient client = new WebClient();
-            byte[] hashResponse = client.UploadData(url, hash);
-            if (hashResponse.ToString() == "true")
-            {
-                byte[] serverResponse = client.UploadFile(url, image_name);
-                progressBar();
+            MessageBox.Show(filePath);
+                WebClient webclient = new WebClient();
+            // byte[] hashResponse = webclient.UploadData(url, hash);
+            // if (hashResponse.ToString() == "true")
+            // {
+            webclient.Headers.Add("User-Agent: Other");
+            byte[] serverResponse = webclient.UploadFile(url1, filePath);
+            //    progressBar();
                 return true;
-            }
-            else
-            {
-                return false;
-            }
+           // }
+         //   else
+            //{
+            //    return false;
+            //}
 
 
             // }
@@ -172,10 +174,10 @@ namespace client
 
                         //ImageConverter Class convert Image object to Byte array.
                        //byte[] bytes = (byte[])(new ImageConverter()).ConvertTo(image, typeof(byte[]));
-                       byte[] hash = Hash_Compute(FilePath);
+                     //  byte[] hash = Hash_Compute(FilePath);
                        //byte[] hash = Hash_Compute(image);
                       //byte[] hash = Hash_Compute(bytes);
-                        bool uploadResponse = UploadInfo(FilePath, FileName, hash);// sends the hash code and if it is not found image is uploaded
+                        bool uploadResponse = UploadInfo(FilePath, FileName);// sends the hash code and if it is not found image is uploaded
                         if (uploadResponse == true)// if uploaded image will be added
                             button(FilePath);
                     }
