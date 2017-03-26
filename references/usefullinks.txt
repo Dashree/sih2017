@@ -1,0 +1,5 @@
+Tutorial Creating a Multiple Choice Scanner with OpenCV – ayoungprogrammer's blog
+http://blog.ayoungprogrammer.com/2013/03/tutorial-creating-multiple-choice.html/
+
+Opensource OMR Software (on github)
+https://github.com/romualdoandre/myomr.git
