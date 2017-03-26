@@ -21,13 +21,15 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string url = "http:\\";
+        string server = "http://localhost";
+        string uploadUrl = "/upload/list";
         int x = 0;
         int i = 0;
         
         public FileUpload()
         {
             InitializeComponent();
+            this.uploadUrl = this.server + this.uploadUrl;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -68,34 +70,10 @@ namespace client
             return hash;
         }
 
-        private bool UploadInfo(string filePath, string image_name, byte[] hash)
+        private bool UploadImage(WebClient webclient, string filePath)
         {
-            //    byte[] image = GetBytesFromImage(filePath);
-            // HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            //    request.Method = "POST";
-            //    request.ContentType = "byte"; // to be changed
-            //    request.ContentLength = image.Length;
-            //    request.KeepAlive = false;
-            //    request.AllowAutoRedirect = false;
-            //   // request.AllowWriteStreamBuffering = false;
-            // HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            // if (response.StatusCode == HttpStatusCode.OK)
-            // {
-            WebClient client = new WebClient();
-            byte[] hashResponse = client.UploadData(url, hash);
-            if (hashResponse.ToString() == "true")
-            {
-                byte[] serverResponse = client.UploadFile(url, image_name);
-                progressBar();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-
-            // }
+            byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
+            return true;
         }
         
         void progressBar()
@@ -146,9 +124,11 @@ namespace client
             return false;
        }
 
+        /*
+         [NITIN] This function has somewhat confusing logic. I am keeping it for
+         * reference. To be deleted later.
         private void Files_Click(object sender, EventArgs e)
         {
-
             FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
             if (openFolder1.ShowDialog() == DialogResult.OK)
             {
@@ -185,33 +165,44 @@ namespace client
 
 
 
-                // find image file list in the directory
-                //  for each image
-                // check if image contains qr code
-                // if yes, check if qrcode text matches examcode
-                //    if yes, calculate hash of the image
-                    // if hash not at server upload the image, diaplay it to the user and increment value of progress bar
-                     
             }
         }
+        */
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             collegeName = CollegeIdTxt.Text;
         }
 
-        private void progressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             examcode = ExamIdTxt.Text;
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private List<String> GetFileList(String dirpath)
         {
+            List<String> filelist = new List<String>();
+            return filelist;
+        }
 
+        private void StartUploadClick(object sender, EventArgs e)
+        {
+            String dirpath = ImgeFolder.Text;
+            // find image file list in the directory
+            List<String> filelist = this.GetFileList(dirpath);
+            
+            WebClient client = new WebClient();
+            
+            foreach(String imgpath in filelist)
+            {
+                //  for each image
+               // check if image contains qr code
+                // if yes, check if qrcode text matches examcode
+                //    if yes, calculate hash of the image
+                // if hash not at server upload the image, diaplay it to the user and increment value of progress bar
+                this.UploadImage(client, imgpath);
+            }
+               
         }
     }
 }
