@@ -8,3 +8,6 @@ __pycache__/
 *.suo
 Debug/
 Release/
+*.csproj.user
+project/server/djangoapp/documents/
+project/client/packages/ZXing.2.1.1/
