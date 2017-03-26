@@ -10,10 +10,9 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
-using MessagingToolkit.QRCode;
-using MessagingToolkit.QRCode.Codec;
-using MessagingToolkit.QRCode.Codec.Data;
-
+using com.google.zxing;
+using com.google.zxing.common;
+using com.google.zxing.qrcode;
 namespace client
 {
     public partial class FileUpload : Form
@@ -50,16 +49,25 @@ namespace client
                 while ((count = fileStream.Read(buffer, sum, length - sum)) > 0)
                     sum += count;  // sum is a buffer offset for next reading
             }
-
+            MessageBox.Show(buffer.ToString());
             return buffer;
         }
-        private byte[] Hash_Compute(string filePath)
+        //public byte[] ReadFileBytes(System.Drawing.Image imageIn)
+        //{
+        //    using (var ms = new MemoryStream())
+        //    {
+        //        imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+        //        return ms.ToArray();
+        //    }
+        //}
+
+        private byte[] Hash_Compute(String FilePath)
         {
-            byte[] byte_code = this.ReadFileBytes(filePath);
+            byte[] byte_code = this.ReadFileBytes(FilePath);
             byte[] hash;
             SHA512 code = new SHA512Managed();
             hash = code.ComputeHash(byte_code);
-
+            MessageBox.Show(hash.ToString());
             return hash;
         }
 
@@ -127,41 +135,19 @@ namespace client
 
         private bool QRCodeScan(string workBmp)
         {
-            string extension = Path.GetExtension(workBmp);
-            workBmp.Replace(extension, ".bmp");
-            using (var fullImg = new Bitmap(workBmp))
-            {
-                Bitmap result = fullImg;
-                //top-left
-                var bandImg1 = result.Clone(new System.Drawing.Rectangle(0, 0, result.Width / 2, result.Height / 2), fullImg.PixelFormat);
-
-                //top-right
-                var bandImg2 = result.Clone(new System.Drawing.Rectangle(result.Width / 2, 0, result.Width / 2, result.Height / 2), fullImg.PixelFormat);
-                //bottom-left
-                var bandImg3 = result.Clone(new System.Drawing.Rectangle(0, result.Height / 2, result.Width / 2, result.Height / 2), fullImg.PixelFormat);
-                //bottom-right
-                var bandImg4 = result.Clone(new System.Drawing.Rectangle(result.Width / 2, result.Height / 2, result.Width / 2, result.Height / 2), fullImg.PixelFormat);
-
-                //saving images for testing purpose just to see what was saved for each corner. 
-
-                //bandImg1.Save("c:\\img.png", System.Drawing.Imaging.ImageFormat.Png);
-                //bandImg2.Save("c:\\bandImg2.gif", System.Drawing.Imaging.ImageFormat.Gif);
-                //bandImg3.Save("c:\\bandImg3.gif", System.Drawing.Imaging.ImageFormat.Gif);
-                //bandImg4.Save("c:\\bandImg4.gif", System.Drawing.Imaging.ImageFormat.Gif);
-
-                QRCodeDecoder decoder = new QRCodeDecoder();
-                string QRinfo = (decoder.Decode(new QRCodeBitmapImage(bandImg1 as Bitmap)));
-                //string QRinfo = Process(bandImg1);//this  should pass in the bandImg depending on the above search finding which corner has a qr image
-                // MessageBox.Show(QRinfo);
-                //textBox1.Text = QRinfo;
-               //Ckeck if the QR  code matches with the exam code
-                if(String.Compare(QRinfo, examcode) == 0)
-                    return true;
-                return false;
-            }
-        }
-
-
+           
+            Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
+            LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
+            Binarizer binarizer = new HybridBinarizer(src) ;
+            BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
+            QRCodeReader reader = new QRCodeReader();
+            Result qrDecode = reader.decode(imgBinarybmp);
+            //MessageBox.Show(qrDecode.ToString());
+            //MessageBox.Show(examcode);
+            if (String.Compare(qrDecode.ToString(), examcode) == 0)
+                return true;
+            return false;
+       }
 
         private void Files_Click(object sender, EventArgs e)
         {
@@ -178,10 +164,17 @@ namespace client
                     FileInfo path = new FileInfo(img.ToString());
                     string FilePath = path.FullName;
                     string FileName = Path.GetFileNameWithoutExtension(FilePath);
-                    bool Qr = QRCodeScan(img, FilePath);
+                    bool Qr = QRCodeScan(FilePath);
                     if (Qr == true)
                     {
-                        byte[] hash = Hash_Compute(FilePath);
+                        //Read Image File into Image object.
+                        //Image image = Image.FromFile(FilePath);
+
+                        //ImageConverter Class convert Image object to Byte array.
+                       //byte[] bytes = (byte[])(new ImageConverter()).ConvertTo(image, typeof(byte[]));
+                       byte[] hash = Hash_Compute(FilePath);
+                       //byte[] hash = Hash_Compute(image);
+                      //byte[] hash = Hash_Compute(bytes);
                         bool uploadResponse = UploadInfo(FilePath, FileName, hash);// sends the hash code and if it is not found image is uploaded
                         if (uploadResponse == true)// if uploaded image will be added
                             button(FilePath);
@@ -214,11 +207,9 @@ namespace client
         {
 
         }
-
-        private void textBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
             examcode = textBox2.Text;
         }
-
     }
 }
