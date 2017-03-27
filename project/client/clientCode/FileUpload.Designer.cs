@@ -42,85 +42,94 @@
             // CollegeIdTxt
             // 
             this.CollegeIdTxt.Cursor = System.Windows.Forms.Cursors.Default;
-            this.CollegeIdTxt.Location = new System.Drawing.Point(162, 14);
-            this.CollegeIdTxt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CollegeIdTxt.Location = new System.Drawing.Point(144, 11);
+            this.CollegeIdTxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CollegeIdTxt.Name = "CollegeIdTxt";
-            this.CollegeIdTxt.Size = new System.Drawing.Size(300, 26);
+            this.CollegeIdTxt.Size = new System.Drawing.Size(267, 22);
             this.CollegeIdTxt.TabIndex = 0;
             // 
             // ExamIdTxt
             // 
             this.ExamIdTxt.Cursor = System.Windows.Forms.Cursors.Default;
-            this.ExamIdTxt.Location = new System.Drawing.Point(162, 79);
-            this.ExamIdTxt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ExamIdTxt.Location = new System.Drawing.Point(144, 63);
+            this.ExamIdTxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ExamIdTxt.Name = "ExamIdTxt";
-            this.ExamIdTxt.Size = new System.Drawing.Size(300, 26);
+            this.ExamIdTxt.Size = new System.Drawing.Size(267, 22);
             this.ExamIdTxt.TabIndex = 1;
             // 
             // CollegeIdLabel
             // 
             this.CollegeIdLabel.AutoSize = true;
             this.CollegeIdLabel.Enabled = false;
-            this.CollegeIdLabel.Location = new System.Drawing.Point(34, 24);
+            this.CollegeIdLabel.Location = new System.Drawing.Point(30, 19);
             this.CollegeIdLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CollegeIdLabel.Name = "CollegeIdLabel";
-            this.CollegeIdLabel.Size = new System.Drawing.Size(108, 20);
+            this.CollegeIdLabel.Size = new System.Drawing.Size(96, 17);
             this.CollegeIdLabel.TabIndex = 2;
             this.CollegeIdLabel.Text = "College Name";
             // 
             // ExamIdLabel
             // 
             this.ExamIdLabel.AutoSize = true;
-            this.ExamIdLabel.Location = new System.Drawing.Point(72, 85);
+            this.ExamIdLabel.Location = new System.Drawing.Point(64, 68);
             this.ExamIdLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ExamIdLabel.Name = "ExamIdLabel";
-            this.ExamIdLabel.Size = new System.Drawing.Size(70, 20);
+            this.ExamIdLabel.Size = new System.Drawing.Size(59, 17);
             this.ExamIdLabel.TabIndex = 3;
             this.ExamIdLabel.Text = "Exam ID";
             // 
             // UploadBtn
             // 
-            this.UploadBtn.Location = new System.Drawing.Point(162, 201);
-            this.UploadBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.UploadBtn.Location = new System.Drawing.Point(144, 161);
+            this.UploadBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.UploadBtn.Name = "UploadBtn";
-            this.UploadBtn.Size = new System.Drawing.Size(213, 35);
+            this.UploadBtn.Size = new System.Drawing.Size(189, 28);
             this.UploadBtn.TabIndex = 4;
             this.UploadBtn.Text = "Start Upload";
             this.UploadBtn.UseVisualStyleBackColor = true;
             this.UploadBtn.Click += new System.EventHandler(this.StartUploadClick);
             // 
+            // label
+            // 
+            this.label.Location = new System.Drawing.Point(0, 0);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(89, 18);
+            this.label.TabIndex = 9;
+            // 
             // ImgeFolder
             // 
-            this.ImgeFolder.Location = new System.Drawing.Point(162, 138);
+            this.ImgeFolder.Location = new System.Drawing.Point(144, 110);
+            this.ImgeFolder.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ImgeFolder.Name = "ImgeFolder";
             this.ImgeFolder.ReadOnly = true;
-            this.ImgeFolder.Size = new System.Drawing.Size(300, 26);
+            this.ImgeFolder.Size = new System.Drawing.Size(267, 22);
             this.ImgeFolder.TabIndex = 6;
             // 
             // ImageFolderLabel
             // 
             this.ImageFolderLabel.AutoSize = true;
             this.ImageFolderLabel.Enabled = false;
-            this.ImageFolderLabel.Location = new System.Drawing.Point(39, 141);
+            this.ImageFolderLabel.Location = new System.Drawing.Point(35, 113);
             this.ImageFolderLabel.Name = "ImageFolderLabel";
-            this.ImageFolderLabel.Size = new System.Drawing.Size(103, 20);
+            this.ImageFolderLabel.Size = new System.Drawing.Size(90, 17);
             this.ImageFolderLabel.TabIndex = 7;
             this.ImageFolderLabel.Text = "Image Folder";
             // 
             // DirDialogBtn
             // 
-            this.DirDialogBtn.Location = new System.Drawing.Point(485, 141);
+            this.DirDialogBtn.Location = new System.Drawing.Point(431, 113);
+            this.DirDialogBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DirDialogBtn.Name = "DirDialogBtn";
-            this.DirDialogBtn.Size = new System.Drawing.Size(75, 23);
+            this.DirDialogBtn.Size = new System.Drawing.Size(67, 18);
             this.DirDialogBtn.TabIndex = 8;
             this.DirDialogBtn.Text = "***";
             this.DirDialogBtn.UseVisualStyleBackColor = true;
             // 
             // FileUpload
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 318);
+            this.ClientSize = new System.Drawing.Size(538, 256);
             this.Controls.Add(this.DirDialogBtn);
             this.Controls.Add(this.ImageFolderLabel);
             this.Controls.Add(this.ImgeFolder);
@@ -130,9 +139,8 @@
             this.Controls.Add(this.CollegeIdLabel);
             this.Controls.Add(this.ExamIdTxt);
             this.Controls.Add(this.CollegeIdTxt);
-            this.Enabled = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FileUpload";
             this.Text = "FileUpload";
             this.Load += new System.EventHandler(this.FileUpload_Load);
