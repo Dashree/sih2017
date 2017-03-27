@@ -22,7 +22,7 @@ namespace client
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
         string cServer = "http://localhost:8000";
-        string cUploadUrl = "/upload/list/";
+        string cUploadUrl = "/upload/file/";
         string cImageListPath = @"c:\temp";
         String uploadUrl;
         int x = 0;
@@ -79,6 +79,8 @@ namespace client
         private bool UploadImage(WebClient webclient, string filePath)
         {
             byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
+            //string response = System.Text.Encoding.UTF8.GetString(serverResponse);
+            //MessageBox.Show(response);
             return true;
         }
 
@@ -208,8 +210,8 @@ namespace client
                 FileInfo path = new FileInfo(imgpath);
                 string FilePath = path.FullName;
                 bool Qr = QRCodeScan(FilePath);
-                MessageBox.Show(Qr.ToString());
-                if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
+                //MessageBox.Show(Qr.ToString());
+                //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                 {
                     this.UploadImage(client, imgpath);
                     //  for each image
