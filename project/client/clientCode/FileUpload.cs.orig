@@ -17,7 +17,7 @@ namespace client
 {
     public partial class FileUpload : Form
     {
-       // public object BarcodeType { get; private set; }
+        public object BarcodeType { get; private set; }
         private string collegeName, examcode;
         string url1 = "http://127.0.0.1:8000/upload/list/";
         public FileUpload()
