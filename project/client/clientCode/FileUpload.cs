@@ -27,7 +27,15 @@ namespace client
         String uploadUrl;
         int x = 0;
         int i = 0;
-        
+
+        //string findQrCodeText(com.google.zxing.Reader decoder, Bitmap bitmap)
+        //{
+        //    var rgb = new RGBLuminanceSource(bitmap, bitmap.Width, bitmap.Height);
+        //    var hybrid = new com.google.zxing.common.HybridBinarizer(rgb);
+        //    com.google.zxing.BinaryBitmap binBitmap = new com.google.zxing.BinaryBitmap(hybrid);
+        //    string decodedString = decoder.decode(binBitmap, null).Text;
+        //    return decodedString;
+        //}
         public FileUpload()
         {
             InitializeComponent();
@@ -65,14 +73,14 @@ namespace client
             MessageBox.Show(buffer.ToString());
             return buffer;
         }
-        
+
         private byte[] Hash_Compute(String FilePath)
         {
             byte[] byte_code = this.ReadFileBytes(FilePath);
             byte[] hash;
             SHA512 code = new SHA512Managed();
             hash = code.ComputeHash(byte_code);
-            MessageBox.Show(hash.ToString());
+           // MessageBox.Show(hash.ToString());
             return hash;
         }
 
@@ -81,7 +89,7 @@ namespace client
             byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
             return true;
         }
-        
+
         void progressBar()
         {
             ProgressBar progressbar1 = new ProgressBar();
@@ -96,7 +104,7 @@ namespace client
             Controls.Add(label);
             i++;
         }
-        
+
         private void button(String imgPath)
         {
             Button button1 = new Button();
@@ -116,19 +124,26 @@ namespace client
 
         private bool QRCodeScan(string workBmp)
         {
-           
-            Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
-            LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
-            Binarizer binarizer = new HybridBinarizer(src) ;
-            BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
-            QRCodeReader reader = new QRCodeReader();
-            Result qrDecode = reader.decode(imgBinarybmp);
-            //MessageBox.Show(qrDecode.ToString());
-            //MessageBox.Show(examcode);
-            if (String.Compare(qrDecode.ToString(), examcode) == 0)
-                return true;
-            return false;
-       }
+            try
+            {
+                Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
+                LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
+                Binarizer binarizer = new HybridBinarizer(src);
+                BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
+                QRCodeReader reader = new QRCodeReader();
+                Result qrDecode = reader.decode(imgBinarybmp);
+                //MessageBox.Show(qrDecode.ToString());
+                if (String.Compare(qrDecode.ToString(), examcode) == 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
 
         /*
          [NITIN] This function has somewhat confusing logic. I am keeping it for
@@ -196,12 +211,20 @@ namespace client
             
             foreach(String imgpath in filelist)
             {
-                //  for each image
-               // check if image contains qr code
-                // if yes, check if qrcode text matches examcode
-                //    if yes, calculate hash of the image
-                // if hash not at server upload the image, diaplay it to the user and increment value of progress bar
-                this.UploadImage(client, imgpath);
+
+                FileInfo path = new FileInfo(imgpath);
+                string FilePath = path.FullName;
+                bool Qr = QRCodeScan(FilePath);
+                if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
+                {
+                    this.UploadImage(client, imgpath);
+                    //  for each image
+                    // check if image contains qr code
+                    // if yes, check if qrcode text matches examcode
+                    //    if yes, calculate hash of the image
+                    // if hash not at server upload the image, display it to the user and increment value of progress bar
+
+                }
             }
                
         }
