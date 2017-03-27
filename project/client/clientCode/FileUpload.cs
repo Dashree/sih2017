@@ -28,14 +28,6 @@ namespace client
         int x = 0;
         int i = 0;
 
-        //string findQrCodeText(com.google.zxing.Reader decoder, Bitmap bitmap)
-        //{
-        //    var rgb = new RGBLuminanceSource(bitmap, bitmap.Width, bitmap.Height);
-        //    var hybrid = new com.google.zxing.common.HybridBinarizer(rgb);
-        //    com.google.zxing.BinaryBitmap binBitmap = new com.google.zxing.BinaryBitmap(hybrid);
-        //    string decodedString = decoder.decode(binBitmap, null).Text;
-        //    return decodedString;
-        //}
         public FileUpload()
         {
             InitializeComponent();
@@ -132,11 +124,12 @@ namespace client
                 BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
                 QRCodeReader reader = new QRCodeReader();
                 Result qrDecode = reader.decode(imgBinarybmp);
-                //MessageBox.Show(qrDecode.ToString());
-                if (String.Compare(qrDecode.ToString(), examcode) == 1)
+                MessageBox.Show(qrDecode.ToString());
+                if (String.Compare(qrDecode.ToString(), ExamIdTxt.Text) == 0)
                     return true;
-                else
+                
                     return false;
+
             }
             catch
             {
@@ -215,6 +208,7 @@ namespace client
                 FileInfo path = new FileInfo(imgpath);
                 string FilePath = path.FullName;
                 bool Qr = QRCodeScan(FilePath);
+                MessageBox.Show(Qr.ToString());
                 if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                 {
                     this.UploadImage(client, imgpath);
