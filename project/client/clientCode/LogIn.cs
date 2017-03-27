@@ -15,9 +15,7 @@ namespace client
     {   
         string serverUrl;
         string loginUrl = "/user/login/";
-        private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata"};
-        private string[] password = { "", "qwer", "asdf", "zxcv" };
-
+        
         WebClient webclient = new WebClient();
         public LogIn(string serverUrl)
         {
