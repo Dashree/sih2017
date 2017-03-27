@@ -18,7 +18,7 @@ def list(request):
         if form.is_valid():
             newdoc = Document(docfile=request.FILES['docfile'])
             newdoc.save()
-
+            
             # Redirect to the document list after POST
             return HttpResponseRedirect(reverse('list'))
     else:
