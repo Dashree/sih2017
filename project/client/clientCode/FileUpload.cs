@@ -21,17 +21,16 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string cServer = "http://localhost:8000";
         string cUploadUrl = "/upload/file/";
         string cImageListPath = @"c:\temp";
         String uploadUrl;
         int x = 0;
         int i = 0;
 
-        public FileUpload()
+        public FileUpload(string serverUrl)
         {
             InitializeComponent();
-            this.uploadUrl = this.cServer + this.cUploadUrl;
+            this.uploadUrl = serverUrl + this.cUploadUrl;
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
@@ -205,19 +204,28 @@ namespace client
             
             foreach(String imgpath in filelist)
             {
-                bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
-                //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
-                {
-                    this.UploadImage(client, imgpath);
-                    //  for each image
-                    // check if image contains qr code
-                    // if yes, check if qrcode text matches examcode
-                    //    if yes, calculate hash of the image
-                    // if hash not at server upload the image, display it to the user and increment value of progress bar
+                try
+                { 
+                    bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
+                    //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
+                    {
+                        this.UploadImage(client, imgpath);
+                        //  for each image
+                        // check if image contains qr code
+                        // if yes, check if qrcode text matches examcode
+                        //    if yes, calculate hash of the image
+                        // if hash not at server upload the image, display it to the user and increment value of progress bar
 
+                    }
+                }
+                catch
+                {
+                    // In case of any exception, try the next file.
                 }
             }
-               
+
+            //Done with uploading... Exit now.
+            System.Windows.Forms.Application.Exit();
         }
     }
 }

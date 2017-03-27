@@ -8,6 +8,8 @@ namespace client
 {
     static class Program
     {
+        static string cServer = "http://localhost:8000";
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,7 @@ namespace client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LogIn());
+            Application.Run(new LogIn(cServer));
         }
     }
 }
