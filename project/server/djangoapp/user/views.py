@@ -41,7 +41,7 @@ class RegisterUserView(View):
 
         return render(request, self.template_name, {'form':form})
 
-    
+
 
 def login_user(request):
     if request.method == "POST":
@@ -51,8 +51,8 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                
-                return redirect('http://127.0.0.1:8000/upload/list/')
+
+                return redirect('upload:list')
             else:
                 return render(request, 'login.html', {'error_message': 'Your account has been disabled'})
         else:
