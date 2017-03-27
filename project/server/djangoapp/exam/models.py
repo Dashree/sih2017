@@ -13,7 +13,7 @@ class Student_info(models.Model):
     student_name = models.CharField(max_length=100)
     centre_name = models.CharField(max_length=100)
 
-#[Akshata this table will hold the marks when they come from the workers.]
+#[this table will hold the marks when they come from the workers.]
 class Final_marks(models.Model):
     examid = models.ForeignKey('Exam_table', on_delete=models.CASCADE)
     studentid = models.ForeignKey('Student_info', on_delete=models.CASCADE)
