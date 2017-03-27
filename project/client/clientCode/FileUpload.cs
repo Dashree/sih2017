@@ -116,18 +116,24 @@ namespace client
 
         private bool QRCodeScan(string workBmp)
         {
-           
-            Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
-            LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
-            Binarizer binarizer = new HybridBinarizer(src) ;
-            BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
-            QRCodeReader reader = new QRCodeReader();
-            Result qrDecode = reader.decode(imgBinarybmp);
-            //MessageBox.Show(qrDecode.ToString());
-            //MessageBox.Show(examcode);
-            if (String.Compare(qrDecode.ToString(), examcode) == 0)
-                return true;
-            return false;
+            try
+            {
+                Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
+                LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
+                Binarizer binarizer = new HybridBinarizer(src);
+                BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
+                QRCodeReader reader = new QRCodeReader();
+                Result qrDecode = reader.decode(imgBinarybmp);
+                MessageBox.Show(qrDecode.ToString());
+                //MessageBox.Show(examcode);
+                if (String.Compare(qrDecode.ToString(), examcode) == 0)
+                    return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
        }
 
         /*
@@ -168,9 +174,6 @@ namespace client
                     //if at server skip file
                     //else call button() and uploadInfo()
                 }
-
-
-
             }
         }
         */
@@ -193,15 +196,22 @@ namespace client
             string[] filelist = Directory.GetFiles(dirpath);
             
             WebClient client = new WebClient();
-            
-            foreach(String imgpath in filelist)
+
+            foreach (String imgpath in filelist)
             {
+                FileInfo path = new FileInfo(imgpath);
+                string FilePath = path.FullName;
+                bool QR = QRCodeScan(FilePath);
+                if (QR == true)
+                {
+                  this.UploadImage(client, imgpath);
+                }
                 //  for each image
-               // check if image contains qr code
+                // check if image contains qr code
                 // if yes, check if qrcode text matches examcode
                 //    if yes, calculate hash of the image
                 // if hash not at server upload the image, diaplay it to the user and increment value of progress bar
-                this.UploadImage(client, imgpath);
+
             }
                
         }
