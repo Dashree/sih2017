@@ -116,28 +116,27 @@ namespace client
         }
 
 
-        private bool QRCodeScan(string workBmp)
+        private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
+            bool foundExamId = false;
             try
             {
-                Bitmap imgBmp = new Bitmap(Image.FromFile(workBmp, true));
+                Bitmap imgBmp = new Bitmap(Image.FromFile(imagepath, true));
                 LuminanceSource src = new RGBLuminanceSource(imgBmp, imgBmp.Width, imgBmp.Height);
                 Binarizer binarizer = new HybridBinarizer(src);
                 BinaryBitmap imgBinarybmp = new BinaryBitmap(binarizer);
                 QRCodeReader reader = new QRCodeReader();
                 Result qrDecode = reader.decode(imgBinarybmp);
-                MessageBox.Show(qrDecode.ToString());
-                if (String.Compare(qrDecode.ToString(), ExamIdTxt.Text) == 0)
-                    return true;
-                
-                    return false;
+                String qrExamId = qrDecode.ToString();
 
+                if (String.Compare(qrExamId, ExamIdTxt.Text) == 0)
+                    foundExamId = true;
             }
             catch
             {
-                return false;
+                foundExamId = false;
             }
-
+            return foundExamId;
         }
 
         /*
@@ -206,11 +205,7 @@ namespace client
             
             foreach(String imgpath in filelist)
             {
-
-                FileInfo path = new FileInfo(imgpath);
-                string FilePath = path.FullName;
-                bool Qr = QRCodeScan(FilePath);
-                //MessageBox.Show(Qr.ToString());
+                bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
                 //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                 {
                     this.UploadImage(client, imgpath);
