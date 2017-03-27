@@ -54,9 +54,9 @@ def login_user(request):
 
                 return redirect('upload:list')
             else:
-                return render(request, 'login.html', {'error_message': 'Your account has been disabled'})
+                return render(request, 'login.html', {'error_message': 'Your account has been disabled'}, status=401)
         else:
-            return render(request, 'login.html', {'error_message': 'Invalid login'})
+            return render(request, 'login.html', {'error_message': 'Invalid login'},status=401)
     return render(request, 'login.html')
 
 #   Getting IP address of the client
