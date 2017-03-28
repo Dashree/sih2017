@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 #This table contains the information regarding the Exam information.
-class Exam_table(models.Model):
+class Exam_details(models.Model):
     examid = models.CharField(max_length=100)
     exam_name = models.CharField(max_length=100)
     #exam_date = models.datefield(null = 'True')
@@ -15,8 +15,9 @@ class Student_info(models.Model):
 
 #[this table will hold the marks when they come from the workers.]
 class Final_marks(models.Model):
-    examid = models.ForeignKey('Exam_table', on_delete=models.CASCADE)
+    examid = models.ForeignKey('Exam_details', on_delete=models.CASCADE)
     studentid = models.ForeignKey('Student_info', on_delete=models.CASCADE)
+    #Check if cascade on delete is needed or we should use 'protect'.
     sect_no = models.IntegerField()
     ques_no = models.IntegerField()
     mark = models.IntegerField()
