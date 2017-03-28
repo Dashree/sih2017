@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -13,7 +13,8 @@ namespace client
 {
     public partial class LogIn : Form
     {   string url = "http://127.0.0.1:8000/user/login/";
-        private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata"};
+        // string username, password;
+        private string[] username = { "Lavina", "Shruti", "Snigdha", "Akshata" };
         private string[] password = { "123$", "qwer", "asdf", "zxcv" };
         public LogIn()
         {
@@ -22,15 +23,17 @@ namespace client
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
-        //private int verification(string username, string password)
-        //{
-        //    WebClient verify = new WebClient();
-        //    byte[] verifyResponse1 = verify.UploadFile(url, username);
+        // private int verification()
+        // {
+        //WebClient webclient = new WebClient();
+        //webclient.Credentials = new NetworkCredential(username, password);
+
+        //byte[] verifyResponse1 = webclient.UploadFile(url, username);
         //    if (verifyResponse1.ToString() == "true")
         //    {
-        //        byte[] verifyResponse2 = verify.UploadFile(url, password);
+        //        byte[] verifyResponse2 = verify.Uploa / dFile(url, password);
         //        if (verifyResponse2.ToString() == "true")
         //        {
         //            return 1;
@@ -38,7 +41,7 @@ namespace client
         //        return 0;
         //    }
         //    return 0;
-        //}
+        // }
 
         private int verify(string pass, int j)
         {
@@ -51,7 +54,7 @@ namespace client
         private void button1_Click(object sender, EventArgs e)
         {
             //label3.Visible = false;
-            //int flag = verification(textBox1.Text, textBox2.Text);
+            //int flag = verification();
             //if (flag == 1)
             //{
             //    this.Hide(); // to Hide Form1
@@ -65,7 +68,6 @@ namespace client
             //{
             //    label3.Visible = true;
             //    textBox2.Clear();
-
             //}
             int i = 0;
             foreach (string name in username)
@@ -114,6 +116,7 @@ namespace client
 
         private void textBox2_Click(object sender, EventArgs e)
         {
+
         }
 
         private void label5_Click(object sender, EventArgs e)

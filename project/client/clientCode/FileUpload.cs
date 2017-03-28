@@ -125,13 +125,18 @@ namespace client
                 QRCodeReader reader = new QRCodeReader();
                 Result qrDecode = reader.decode(imgBinarybmp);
                 MessageBox.Show(qrDecode.ToString());
-                //MessageBox.Show(examcode);
-                if (String.Compare(qrDecode.ToString(), examcode) == 0)
+                MessageBox.Show(ExamIdTxt.Text);
+                MessageBox.Show(String.Compare(qrDecode.ToString(), ExamIdTxt.Text).ToString());
+                if (String.Compare(qrDecode.ToString(), ExamIdTxt.Text) == 0)
+                {
                     return true;
+                }
                 return false;
+                
             }
-            catch
+            catch(ReaderException e)
             {
+                MessageBox.Show(e.ToString());
                 return false;
             }
        }
@@ -202,6 +207,7 @@ namespace client
                 FileInfo path = new FileInfo(imgpath);
                 string FilePath = path.FullName;
                 bool QR = QRCodeScan(FilePath);
+                MessageBox.Show(QR.ToString());
                 if (QR == true)
                 {
                   this.UploadImage(client, imgpath);
