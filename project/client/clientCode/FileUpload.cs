@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
-
 using com.google.zxing;
 using com.google.zxing.common;
 using com.google.zxing.qrcode;
@@ -24,6 +23,7 @@ namespace client
         string cUploadUrl = "/upload/file/";
         string cHash = "/upload/hash/";
         string cImageListPath = @"c:\temp";
+       // string path = @"c:\";
         String uploadUrl;
         int x = 0;
         int i = 0;
@@ -79,23 +79,25 @@ namespace client
             return hash1;
         }
         // To be Changed:
-        //private bool IsHashAtServer(WebClient webclient, string hash)
-        //{
-        //    bool hash_server = true;
-        //    try
-        //    {
-        //        byte[] hashResponse = webclient.UploadData(uploadUrl, hash);
-        //    }
-        //    catch(WebException exp)
-        //    {
-        //        HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-        //        if (response.StatusCode != HttpStatusCode.OK)
-        //        {
-        //            hash_server = false;
-        //        }
-        //    }
-        //    return hash_server;
-        //}
+        private bool IsHashAtServer(WebClient webclient, string hash)
+        {
+            bool hash_server = true;
+            try
+            {
+                cHash = cHash + hash;
+                string response = webclient.DownloadString(cHash);
+               // byte[] hashResponse = webclient.UploadData(uploadUrl, hash);
+            }
+            catch (WebException exp)
+            {
+                HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    hash_server = false;
+                }
+            }
+            return hash_server;
+        }
 
         private bool UploadImage(WebClient webclient, string filePath)
         {
@@ -123,7 +125,7 @@ namespace client
         private void button(String imgPath)
         {
             Button button1 = new Button();
-            button1.Location = new Point(40, 150 + x);
+            button1.Location = new Point(40, 155 + x);
             button1.Height = 60;
             button1.Width = 60;
             x = x + 80;
@@ -134,9 +136,39 @@ namespace client
             button1.Show();
             this.AutoScroll = true;
             //progressBar();
-
         }
+        //int count = 0;
+        int y = 0;
+        private string UploadStatus(string response, string imgname)
+        {
+            Label lbl = new Label();
+            lbl.Location = new Point(100, 180 + y);
+            y = y + 80;
+            lbl.AutoSize = true;
+            if (response == "true")
+                lbl.Text = imgname + " : Image Uploaded Successfully";
+            else
+                lbl.Text = imgname + " : Image Skipped";
+            MessageBox.Show(lbl.Text);
+            Controls.Add(lbl);
+            return lbl.Text;
+        }
+        private void SaveData(string data)
+        {
+            string path = @"c:\temp\uploadStatus.txt";
 
+            // This text is added only once to the file.
+            if (!File.Exists(path))
+            {
+                string Text = data + Environment.NewLine;
+                File.WriteAllText(path, Text);
+            }
+            else
+            {
+                string appendText = data + Environment.NewLine;
+                File.AppendAllText(path, appendText);
+            }
+        }
 
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
@@ -232,13 +264,19 @@ namespace client
                     bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
                     //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                     {
+                        button(imgpath);
+                        string FileName = Path.GetFileNameWithoutExtension(imgpath);
+                        string data = UploadStatus("true", FileName);// create label
+                        SaveData(data);
                         string hash = Hash_Compute(imgpath);
-                     //   bool hash_server = IsHashAtServer(client, hash);
-                        //if (hash_server == true)
+                        bool hash_server = IsHashAtServer(client, hash);
+                        
+                        if (hash_server == true)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
-                            progressBar();
+                            UploadStatus("true", FileName);
+                           // progressBar();
                         }
                         //  for each image
                         // check if image contains qr code
