@@ -1,6 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
+from .models import ScannedImage
 
 from django.template import RequestContext
 from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
@@ -42,3 +41,14 @@ def upload_file(request):
         return JsonResponse(response)
     else:
         return HttpResponseNotFound("Unable to upload file")
+
+@require_GET
+def check_hash(request, hashvalue):
+    '''
+    check if hash is present or not
+    '''
+    if ScannedImage.objects.filter(hashval = hashvalue):
+        return JsonResponse(status_code = 200)
+    else:
+        return JsonResponse(status_code = 404)
+    
