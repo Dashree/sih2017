@@ -23,7 +23,7 @@ def file_list(request):
     #assert len(documents) > 0
     # Render list page with the documents and the form
     return render(
-        request,
+       request,
         'list.html',
         {'documents': documents, 'form': form}
     )
