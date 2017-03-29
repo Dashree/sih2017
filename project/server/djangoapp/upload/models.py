@@ -9,7 +9,7 @@ class ScannedImage(models.Model):
     represents scanned image uploaded to server.
     '''
     docfile = models.FileField(upload_to='documents/%d')
-    hashval = models.CharField(max_length=128, null=False, blank=False,editable=False,db_index=True)
+    hashval = models.CharField(max_length=128, null=True, blank=False,editable=False,db_index=True)
     #session = models.ForeignKey(XGenSession)
 
     def clean(self):
