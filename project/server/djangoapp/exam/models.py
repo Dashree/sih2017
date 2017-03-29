@@ -15,7 +15,7 @@ class Student_info(models.Model):
 
 #[This table will hold the marks(Question wise marks) when they come from the workers.]
 class AnswerSheetMarks(models.Model):
-    examid = models.ForeignKey('Exam_table', on_delete=models.CASCADE)
+    examid = models.ForeignKey('ExamInfo', on_delete=models.CASCADE)
     studentid = models.ForeignKey('Student_info', on_delete=models.CASCADE)
     #check if need of on delete cascade is need or we should use 'protect'.
     sect_no = models.IntegerField()
