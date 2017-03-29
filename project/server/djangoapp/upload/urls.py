@@ -2,7 +2,7 @@
 
 from django.conf.urls import url
 
-from .views import file_list,upload_file
+from .views import file_list,upload_file,check_hash
 
 urlpatterns = [
     url(r'^list/$', file_list , name = 'list'),
