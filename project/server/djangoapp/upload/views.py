@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
 from django.core.urlresolvers import reverse
 
 from django.views.decorators.http import require_GET, require_POST
-
+from exam.models import ExamInfo
 from .models import ScannedImage
 from .forms import DocumentForm
 
@@ -52,3 +52,10 @@ def check_hash(request, hashvalue):
     else:
         return JsonResponse(status_code = 404)
     
+@require_POST
+def download_template(request, examid):
+    '''
+    give download url to workers
+    '''
+    template=ExamInfo.objects.filter(id=examid)
+    return JsonResponse(template.template)      #examid is passed by the url and equivalent to the default id of ExamInfo table
