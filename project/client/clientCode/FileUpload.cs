@@ -78,21 +78,25 @@ namespace client
             MessageBox.Show(hash1);
             return hash1;
         }
-        // To be Changed:
+        
         private bool IsHashAtServer(WebClient webclient, string hash)
         {
+            int status;
             bool hash_server = true;
             try
             {
                 cHash = cHash + hash;
                 string response = webclient.DownloadString(cHash);
-               // byte[] hashResponse = webclient.UploadData(uploadUrl, hash);
-            }
+                 MessageBox.Show(response);
+           }
             catch (WebException exp)
             {
+
                 HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
+                    status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
+                    MessageBox.Show(status.ToString());
                     hash_server = false;
                 }
             }
