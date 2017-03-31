@@ -25,44 +25,44 @@ namespace client
             this.loginUrl = this.serverUrl + this.loginUrl;
         }
 
-        private bool login(string username, string password)
-        {
-            MessageBox.Show(username);
-            MessageBox.Show(password);
-            NameValueCollection login_params = new NameValueCollection();
-            login_params.Add("username", username);
-            login_params.Add("password", password);
-            bool logged_in = false;
-            try
-            {
-                byte[] responseArray = this.webclient.UploadValues(this.loginUrl, login_params);
-                //string response = System.Text.Encoding.UTF8.GetString(serverResponse); 
-            }
-            catch (WebException exp)
-            {
-                HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    logged_in = false;
-                }
-            }
-            return logged_in;
-        }
+        //private bool login(string username, string password)
+        //{
+        //    MessageBox.Show(username);
+        //    MessageBox.Show(password);
+        //    NameValueCollection login_params = new NameValueCollection();
+        //    login_params.Add("username", username);
+        //    login_params.Add("password", password);
+        //    bool logged_in = false;
+        //    try
+        //    {
+        //        byte[] responseArray = this.webclient.UploadValues(this.loginUrl, login_params);
+        //        //string response = System.Text.Encoding.UTF8.GetString(serverResponse); 
+        //    }
+        //    catch (WebException exp)
+        //    {
+        //        HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
+        //        if (response.StatusCode != HttpStatusCode.OK)
+        //        {
+        //            logged_in = false;
+        //        }
+        //    }
+        //    return logged_in;
+        //}
 
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-           if (login(userNameBox.Text, this.passwordBox.Text) == true)
+    //       if (login(userNameBox.Text, this.passwordBox.Text) == true)
             {
                 label3.Visible = false;
                 this.Hide();
                 FileUpload upload = new FileUpload(this.serverUrl);
                 upload.Show();
             }
-            else
-            {
-                label3.Visible = true;
-            }
+            //else
+            //{
+            //    label3.Visible = true;
+            //}
         }
     }
 }

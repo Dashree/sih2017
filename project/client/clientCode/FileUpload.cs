@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
+using System.Diagnostics;
 using com.google.zxing;
 using com.google.zxing.common;
 using com.google.zxing.qrcode;
@@ -25,6 +26,7 @@ namespace client
         string cImageListPath = @"c:\temp";
        // string path = @"c:\";
         String uploadUrl;
+        string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
 
@@ -93,12 +95,18 @@ namespace client
             {
 
                 HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-                if (response.StatusCode != HttpStatusCode.OK)
+                if ((int)response.StatusCode != 200)
                 {
                     status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
                     MessageBox.Show(status.ToString());
                     hash_server = false;
                 }
+                //if (response.StatusCode != HttpStatusCode.OK)
+                //{
+                //    status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
+                //    MessageBox.Show(status.ToString());
+                //    hash_server = false;
+                //}
             }
             return hash_server;
         }
@@ -159,7 +167,7 @@ namespace client
         }
         private void SaveData(string data)
         {
-            string path = @"c:\temp\uploadStatus.txt";
+           
 
             // This text is added only once to the file.
             if (!File.Exists(path))
@@ -251,7 +259,6 @@ namespace client
         {
             examcode = ExamIdTxt.Text;
         }
-
         private void StartUploadClick(object sender, EventArgs e)
         {
             String dirpath = ImgeFolder.Text;
@@ -275,7 +282,7 @@ namespace client
                         string hash = Hash_Compute(imgpath);
                         bool hash_server = IsHashAtServer(client, hash);
                         
-                        if (hash_server == true)
+                        if (hash_server == false)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
@@ -289,6 +296,9 @@ namespace client
                         // if hash not at server upload the image, display it to the user and increment value of progress bar
 
                     }
+                    Process process = new Process();
+                     Process.Start(path);
+                    process.WaitForExit();
                 }
                 catch
                 {

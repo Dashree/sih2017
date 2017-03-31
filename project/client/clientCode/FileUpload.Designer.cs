@@ -95,7 +95,7 @@
             // ImgeFolder
             // 
             this.ImgeFolder.Location = new System.Drawing.Point(108, 89);
-            this.ImgeFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ImgeFolder.Margin = new System.Windows.Forms.Padding(2);
             this.ImgeFolder.Name = "ImgeFolder";
             this.ImgeFolder.ReadOnly = true;
             this.ImgeFolder.Size = new System.Drawing.Size(201, 20);
@@ -114,8 +114,8 @@
             // 
             // DirDialogBtn
             // 
-            this.DirDialogBtn.Location = new System.Drawing.Point(323, 92);
-            this.DirDialogBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DirDialogBtn.Location = new System.Drawing.Point(323, 93);
+            this.DirDialogBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DirDialogBtn.Name = "DirDialogBtn";
             this.DirDialogBtn.Size = new System.Drawing.Size(50, 15);
             this.DirDialogBtn.TabIndex = 8;
@@ -126,7 +126,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 317);
+            this.BackColor = System.Drawing.Color.DodgerBlue;
+            this.ClientSize = new System.Drawing.Size(378, 329);
             this.Controls.Add(this.DirDialogBtn);
             this.Controls.Add(this.ImageFolderLabel);
             this.Controls.Add(this.ImgeFolder);
