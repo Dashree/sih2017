@@ -296,16 +296,17 @@ namespace client
                         // if hash not at server upload the image, display it to the user and increment value of progress bar
 
                     }
-                    Process process = new Process();
-                     Process.Start(path);
-                    process.WaitForExit();
+                   
                 }
                 catch
                 {
                     // In case of any exception, try the next file.
                 }
+            
+                
             }
-
+            // Process process = new Process();
+            Process.Start(path);
             //Done with uploading... Exit now.
             System.Windows.Forms.Application.Exit();
         }

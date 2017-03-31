@@ -104,9 +104,9 @@
             this.label1.Font = new System.Drawing.Font("Segoe Print", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(51, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(192, 37);
+            this.label1.Size = new System.Drawing.Size(230, 37);
             this.label1.TabIndex = 8;
-            this.label1.Text = "SIH2017 LOGIN";
+            this.label1.Text = "X-GEN OMR LOGIN";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBox1
