@@ -13,7 +13,7 @@ from .forms import DocumentForm
 
 
 @require_GET
-@login_reqired
+#@login_required
 def file_list(request):
     '''
     show list of uploaded file.
@@ -30,7 +30,7 @@ def file_list(request):
     )
 
 @require_POST
-@login_reqired
+@login_required
 def upload_file(request):
     '''
     upload single file
@@ -47,7 +47,7 @@ def upload_file(request):
         return HttpResponseNotFound("Unable to upload file")
 
 @require_GET
-@login_reqired
+@login_required
 def check_hash(request, hashvalue):
     '''
     check if hash is present or not
