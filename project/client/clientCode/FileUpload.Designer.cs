@@ -138,7 +138,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.DodgerBlue;
+            this.BackColor = System.Drawing.Color.Cyan;
             this.ClientSize = new System.Drawing.Size(395, 329);
             this.Controls.Add(this.LogoutBtn);
             this.Controls.Add(this.DirDialogBtn);
