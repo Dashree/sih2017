@@ -283,7 +283,12 @@ namespace client
            string StatusFile = WithoutExt + DtStamp + Ext;
            return StatusFile; 
         }
-    
+
+        private void ExamIdTxt_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
         //private bool Retry()
         //{
         //    Button button2 = new Button();
