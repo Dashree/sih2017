@@ -32,5 +32,3 @@ class AnswerSheetMarks(models.Model):
     ques_no = models.IntegerField()
     mark = models.IntegerField()
     
-    
-    

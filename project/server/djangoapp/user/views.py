@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from .forms import RegisterUser
 #from .upload import views
@@ -60,3 +60,6 @@ def login_user(request):
     return render(request, 'login.html')
 
 
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
