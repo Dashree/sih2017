@@ -1,7 +1,7 @@
 import hashlib
 
 from django.db import models
-from exam.models import Student_info
+from exam.models import StudentInfo
 
 # Create your models here.
 
@@ -12,7 +12,7 @@ class ScannedImage(models.Model):
     docfile = models.FileField(upload_to='documents/%d')
     hashval = models.CharField(max_length=128, null=True, blank=False,editable=False,db_index=True, unique=True)
     imgsize =  models.IntegerField(editable=False)
-    studentid = models.ForeignKey('Student_info', null=True)
+    studentid = models.ForeignKey(StudentInfo, null=True)
     #session = models.ForeignKey(XGenSession)
 
     def clean(self):

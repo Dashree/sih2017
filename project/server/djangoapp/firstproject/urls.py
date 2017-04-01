@@ -22,7 +22,6 @@ urlpatterns = [
     url(r'^upload/', include('upload.urls')),
     url(r'^user/', include('user.urls')),
     url(r'^admin/', admin.site.urls),
-    patterns('',
-    url(r'^django-rq/', include('django_rq.urls')),
+    #url(r'^django-rq/', include('django_rq.urls')),
    # url(r'^register/', include('upload.registrations_form.html'))
 ]
