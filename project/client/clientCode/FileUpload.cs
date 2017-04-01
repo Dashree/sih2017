@@ -21,16 +21,17 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
-        string StatusFile;
-        string cUploadUrl = "/upload/file/";
-        string cHash = "/upload/hash/";
-       // string cImageListPath = @"c:\";
-        String uploadUrl;
-        string path = @"c:\temp\uploadStatus.txt";
-       // string hashcode = @" C:\temp\hashcode.txt";
-        int x = 0;
-        int i = 0;
-        FileStream stream;
+        private string StatusFile;
+        private string cUploadUrl = "/upload/file/";
+        private string cHash = "/upload/hash/";
+        private string path = @"c:\temp\uploadStatus.txt";
+        private String uploadUrl;
+        private WebClient client;
+        // string hashcode = @" C:\temp\hashcode.txt";
+        private int x = 0;
+        private int i = 0;
+        private FileStream stream;
+
         public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
@@ -39,7 +40,8 @@ namespace client
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
-           // this.ImgeFolder.Text = cImageListPath;
+            // this.ImgeFolder.Text = cImageListPath;
+            this.client = webclient;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -307,8 +309,6 @@ namespace client
 
             string[] filelist = Directory.GetFiles(dirpath, "*.jpg");
 
-            WebClient client = new WebClient();
-         
             foreach (String imgpath in filelist)
             {
                 try
@@ -319,10 +319,10 @@ namespace client
                     {
 
                         string hash = HashCompute(imgpath);
-                        bool hashServer = IsHashAtServer(client, hash);
+                        bool hashServer = IsHashAtServer(this.client, hash);
                         if (hashServer == false)
                         {
-                            this.UploadImage(client, imgpath);
+                            this.UploadImage(this.client, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("true", FileName);// create label and display on form
