@@ -12,8 +12,8 @@ using System.Net;
 namespace client
 {
     public partial class LogIn : Form
-    {   
-        string serverUrl;
+    {
+        string serverUrl = "http://localhost:8000";
         string loginUrl = "/user/login/";
      
 
