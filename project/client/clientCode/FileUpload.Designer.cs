@@ -126,9 +126,9 @@
             // 
             // LogoutBtn
             // 
-            this.LogoutBtn.Location = new System.Drawing.Point(397, 15);
+            this.LogoutBtn.Location = new System.Drawing.Point(258, 131);
             this.LogoutBtn.Name = "LogoutBtn";
-            this.LogoutBtn.Size = new System.Drawing.Size(75, 23);
+            this.LogoutBtn.Size = new System.Drawing.Size(75, 28);
             this.LogoutBtn.TabIndex = 10;
             this.LogoutBtn.Text = "Logout";
             this.LogoutBtn.UseVisualStyleBackColor = true;
@@ -139,7 +139,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(506, 329);
+            this.ClientSize = new System.Drawing.Size(395, 329);
             this.Controls.Add(this.LogoutBtn);
             this.Controls.Add(this.DirDialogBtn);
             this.Controls.Add(this.ImageFolderLabel);

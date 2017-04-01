@@ -28,12 +28,13 @@ namespace client
         string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
-
+        FileStream stream;
         public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
             this.cHash = serverUrl + this.cHash;
+            stream = File.Create(path);
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
@@ -67,47 +68,27 @@ namespace client
             return buffer;
         }
 
-        private string Hash_Compute(String FilePath)
+        private string HashCompute(String FilePath)
         {
             byte[] byte_code = this.ReadFileBytes(FilePath);
             byte[] hash;
             SHA512 code = new SHA512Managed();
             hash = code.ComputeHash(byte_code);
 
-            string hash1 = Convert.ToBase64String(hash); // converting byte array to string
-
+            string hash1 = BitConverter.ToString(hash); // converting byte array to string
+            hash1 = hash1.Replace("-", "");
             MessageBox.Show(hash1);
             return hash1;
         }
-        
+
         private bool IsHashAtServer(WebClient webclient, string hash)
         {
             int status;
-            bool hash_server = true;
-            try
-            {
-                cHash = cHash + hash;
-                string response = webclient.DownloadString(cHash);
-                 MessageBox.Show(response);
-           }
-            catch (WebException exp)
-            {
+            bool hash_server = false;
 
-                HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-                if ((int)response.StatusCode != 200)
-                {
-                    status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
-                    MessageBox.Show(status.ToString());
-                    hash_server = false;
-                }
-                //if (response.StatusCode != HttpStatusCode.OK)
-                //{
-                //    status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
-                //    MessageBox.Show(status.ToString());
-                //    hash_server = false;
-                //}
-            }
-            return hash_server;
+            string hashurl = this.cHash + hash + "/";
+            string response = webclient.DownloadString(hashurl);
+            return response.IndexOf("true") >= 0;
         }
 
         private bool UploadImage(WebClient webclient, string filePath)
@@ -169,16 +150,18 @@ namespace client
            
 
             // This text is added only once to the file.
-            if (!File.Exists(path))
-            {
-                string Text = data + Environment.NewLine;
-                File.WriteAllText(path, Text);
-            }
-            else
-            {
-                string appendText = data + Environment.NewLine;
-                File.AppendAllText(path, appendText);
-            }
+            //if (!File.Exists(path))
+            //{
+            //    string Text = data + Environment.NewLine;
+            //    File.WriteAllText(path, Text);
+            //}
+            //else
+            //{
+            //    string appendText = data + Environment.NewLine;
+            //    File.AppendAllText(path, appendText);
+            //}
+            string appendText = data + Environment.NewLine;
+            File.AppendAllText(path, appendText);
         }
 
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
@@ -282,7 +265,7 @@ namespace client
             // find image file list in the directory
 
             string[] filelist = Directory.GetFiles(dirpath);
-            
+
             WebClient client = new WebClient();
             
             foreach(String imgpath in filelist)
@@ -293,23 +276,22 @@ namespace client
                     if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                     {
                         
-                        string hash = Hash_Compute(imgpath);
+                        string hash = HashCompute(imgpath);
                         bool hashServer = IsHashAtServer(client, hash);
-                        
                         if (hashServer == false)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
-                            string data = UploadStatus("true", FileName);// create label
-                            SaveStatus(data);
-                           // progressBar();
+                            string data = UploadStatus("true", FileName);// create label and display on form
+                            SaveStatus(data); // save in notepad
                         }
-                        //  for each image
-                        // check if image contains qr code
-                        // if yes, check if qrcode text matches examcode
-                        //    if yes, calculate hash of the image
-                        // if hash not at server upload the image, display it to the user and increment value of progress bar
+                        // for each image
+
+                        //check if image contains qr code
+                        //  if yes, check if qrcode text matches examcode
+                        //     if yes, calculate hash of the image
+                        //  if hash not at server upload the image, display it to the user and increment value of progress bar
 
                     }
                    
@@ -318,13 +300,11 @@ namespace client
                 {
                     // In case of any exception, try the next file.
                 }
-            
-                
             }
-            // Process process = new Process();
+           
             Process.Start(path);
             //Done with uploading... Exit now.
-            System.Windows.Forms.Application.Exit();
+           System.Windows.Forms.Application.Exit();
         }
     }
 }
