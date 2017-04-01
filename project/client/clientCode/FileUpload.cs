@@ -23,14 +23,13 @@ namespace client
         private string collegeName, examcode;
         string cUploadUrl = "/upload/file/";
         string cHash = "/upload/hash/";
-        string cImageListPath = @"c:\temp";
-       // string path = @"c:\";
+       // string cImageListPath = @"c:\";
         String uploadUrl;
         string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
 
-        public FileUpload(string serverUrl)
+        public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
@@ -38,7 +37,7 @@ namespace client
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
-            this.ImgeFolder.Text = cImageListPath;
+           // this.ImgeFolder.Text = cImageListPath;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -165,7 +164,7 @@ namespace client
             Controls.Add(lbl);
             return lbl.Text;
         }
-        private void SaveData(string data)
+        private void SaveStatus(string data)
         {
            
 
@@ -259,6 +258,24 @@ namespace client
         {
             examcode = ExamIdTxt.Text;
         }
+
+        private void DirDialogBtn_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
+            if(openFolder1.ShowDialog() == DialogResult.OK)
+            {
+                ImgeFolder.Text = openFolder1.SelectedPath;
+                UploadBtn.Enabled = true;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            LogIn login = new LogIn();
+            login.Show();
+        }
+
         private void StartUploadClick(object sender, EventArgs e)
         {
             String dirpath = ImgeFolder.Text;
@@ -273,20 +290,19 @@ namespace client
                 try
                 { 
                     bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
-                    //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
+                    if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                     {
-                        button(imgpath);
-                        string FileName = Path.GetFileNameWithoutExtension(imgpath);
-                        string data = UploadStatus("true", FileName);// create label
-                        SaveData(data);
-                        string hash = Hash_Compute(imgpath);
-                        bool hash_server = IsHashAtServer(client, hash);
                         
-                        if (hash_server == false)
+                        string hash = Hash_Compute(imgpath);
+                        bool hashServer = IsHashAtServer(client, hash);
+                        
+                        if (hashServer == false)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
-                            UploadStatus("true", FileName);
+                            string FileName = Path.GetFileNameWithoutExtension(imgpath);
+                            string data = UploadStatus("true", FileName);// create label
+                            SaveStatus(data);
                            // progressBar();
                         }
                         //  for each image

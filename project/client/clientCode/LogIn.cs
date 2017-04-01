@@ -18,7 +18,7 @@ namespace client
      
 
         WebClient webclient = new WebClient();
-        public LogIn(string serverUrl)
+        public LogIn()
         {
             InitializeComponent();
             this.serverUrl = serverUrl;
@@ -56,7 +56,7 @@ namespace client
             {
                 label3.Visible = false;
                 this.Hide();
-                FileUpload upload = new FileUpload(this.serverUrl);
+                FileUpload upload = new FileUpload(this.serverUrl, webclient);
                 upload.Show();
             }
             //else
