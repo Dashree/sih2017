@@ -4,9 +4,9 @@ from django.db import models
 #This table contains the information regarding the Exam information.
     
 class AnswersheetTemplate(models.Model):        #section of templates
-    rollnumber = models.FileField(models.Model) 
-    centrecode = models.FileField(models.Model)
-    answercolumn = models.FileField(models.Model)
+    rollnumbersect = models.FileField(models.Model) 
+    centrecodesect = models.FileField(models.Model)
+    answercolumnsect = models.FileField(models.Model)
     completetemplate = models.FileField(models.Model)
 
 class ExamInfo(models.Model):

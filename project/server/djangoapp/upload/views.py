@@ -56,10 +56,20 @@ def check_hash(request, hashvalue):
     else:
         return JsonResponse(res)
     
-@require_POST
+@require_GET
 def download_template(request, examid):
     '''
     give download url to workers
     '''
     template=ExamInfo.objects.filter(id=examid)
     return JsonResponse(template.template)      #examid is passed by the url and equivalent to the default id of ExamInfo table
+
+@require_GET
+def download_scannedimage(request, imageid):
+    image = ScannedImage.objects.get(id=imageid)    
+    filename = "scannedanswer_%d" %imageid
+    response = HttpResponse(image.docfile, content_type='image/jpeg')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename 
+
+    return response
+
