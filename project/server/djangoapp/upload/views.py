@@ -47,7 +47,7 @@ def check_hash(request, hashvalue):
     '''
     check if hash is present or not
     '''
-    if ScannedImage.objects.filter(hashval = hashvalue):
+    if ScannedImage.objects.filter(hashval = hashvalue).exists():
         return JsonResponse(status_code = 200)
     else:
         return JsonResponse(status_code = 404)
