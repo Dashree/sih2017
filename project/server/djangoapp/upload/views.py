@@ -6,12 +6,14 @@ from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
 from django.core.urlresolvers import reverse
 
 from django.views.decorators.http import require_GET, require_POST
+from django.contrib.auth.decorators import login_required
 from exam.models import ExamInfo
 from .models import ScannedImage
 from .forms import DocumentForm
 
 
 @require_GET
+@login_reqired
 def file_list(request):
     '''
     show list of uploaded file.
@@ -28,6 +30,7 @@ def file_list(request):
     )
 
 @require_POST
+@login_reqired
 def upload_file(request):
     '''
     upload single file
@@ -44,6 +47,7 @@ def upload_file(request):
         return HttpResponseNotFound("Unable to upload file")
 
 @require_GET
+@login_reqired
 def check_hash(request, hashvalue):
     '''
     check if hash is present or not
