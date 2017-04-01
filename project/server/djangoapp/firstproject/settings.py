@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+#    'django-rq'
 	'exam.apps.ExamConfig',
     'upload.apps.UploadConfig',
     'user.apps.UserConfig',
@@ -121,3 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 8000,
+        'DB': 0,
+        'PASSWORD': 'some-password',
+        'DEFAULT_TIMEOUT': 360,
+    }
+}
+
+#RQ_EXCEPTION_HANDLERS = ['path.to.my.handler'] # If you need custom exception handlers
+    

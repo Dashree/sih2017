@@ -1,0 +1,13 @@
+Installing mod_wsgi with Apache 2.4
+====================================
+
+1. copy the 'mod_wsgi.cp35-win32.pyd' to 'modules' folder of Apache
+2. Add following lines in httpd.conf
+	LoadModule wsgi_module "modules/mod_wsgi.cp35-win32.so"
+	WSGIPythonHome <python 3.5 installation path>
+3. Python35.dll should be in PATH environment variable. So add <python 3.5 install folder> to system PATH environment variable
+
+OR
+
+3. Create softlink for python35.dll inside modules folder
+	mklink .\modules\python35.dll <python 3.5 install folder>\python35.dll

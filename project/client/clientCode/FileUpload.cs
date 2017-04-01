@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.IO;
 using System.Net;
-
+using System.Diagnostics;
 using com.google.zxing;
 using com.google.zxing.common;
 using com.google.zxing.qrcode;
@@ -23,20 +23,22 @@ namespace client
         private string collegeName, examcode;
         string cUploadUrl = "/upload/file/";
         string cHash = "/upload/hash/";
-        string cImageListPath = @"c:\temp";
+       // string cImageListPath = @"c:\";
         String uploadUrl;
+        string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
-
-        public FileUpload(string serverUrl)
+        FileStream stream;
+        public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
             this.cHash = serverUrl + this.cHash;
+            stream = File.Create(path);
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
-            this.ImgeFolder.Text = cImageListPath;
+           // this.ImgeFolder.Text = cImageListPath;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -66,36 +68,28 @@ namespace client
             return buffer;
         }
 
-        private string Hash_Compute(String FilePath)
+        private string HashCompute(String FilePath)
         {
             byte[] byte_code = this.ReadFileBytes(FilePath);
             byte[] hash;
             SHA512 code = new SHA512Managed();
             hash = code.ComputeHash(byte_code);
 
-            string hash1 = Convert.ToBase64String(hash); // converting byte array to string
-
+            string hash1 = BitConverter.ToString(hash); // converting byte array to string
+            hash1 = hash1.Replace("-", "");
             MessageBox.Show(hash1);
             return hash1;
         }
-        // To be Changed:
-        //private bool IsHashAtServer(WebClient webclient, string hash)
-        //{
-        //    bool hash_server = true;
-        //    try
-        //    {
-        //        byte[] hashResponse = webclient.UploadData(uploadUrl, hash);
-        //    }
-        //    catch(WebException exp)
-        //    {
-        //        HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-        //        if (response.StatusCode != HttpStatusCode.OK)
-        //        {
-        //            hash_server = false;
-        //        }
-        //    }
-        //    return hash_server;
-        //}
+
+        private bool IsHashAtServer(WebClient webclient, string hash)
+        {
+            int status;
+            bool hash_server = false;
+
+            string hashurl = this.cHash + hash + "/";
+            string response = webclient.DownloadString(hashurl);
+            return response.IndexOf("true") >= 0;
+        }
 
         private bool UploadImage(WebClient webclient, string filePath)
         {
@@ -123,7 +117,7 @@ namespace client
         private void button(String imgPath)
         {
             Button button1 = new Button();
-            button1.Location = new Point(40, 150 + x);
+            button1.Location = new Point(40, 155 + x);
             button1.Height = 60;
             button1.Width = 60;
             x = x + 80;
@@ -134,9 +128,41 @@ namespace client
             button1.Show();
             this.AutoScroll = true;
             //progressBar();
-
         }
+        //int count = 0;
+        int y = 0;
+        private string UploadStatus(string response, string imgname)
+        {
+            Label lbl = new Label();
+            lbl.Location = new Point(100, 180 + y);
+            y = y + 80;
+            lbl.AutoSize = true;
+            if (response == "true")
+                lbl.Text = imgname + " : Image Uploaded Successfully";
+            else
+                lbl.Text = imgname + " : Image Skipped";
+            MessageBox.Show(lbl.Text);
+            Controls.Add(lbl);
+            return lbl.Text;
+        }
+        private void SaveStatus(string data)
+        {
+           
 
+            // This text is added only once to the file.
+            //if (!File.Exists(path))
+            //{
+            //    string Text = data + Environment.NewLine;
+            //    File.WriteAllText(path, Text);
+            //}
+            //else
+            //{
+            //    string appendText = data + Environment.NewLine;
+            //    File.AppendAllText(path, appendText);
+            //}
+            string appendText = data + Environment.NewLine;
+            File.AppendAllText(path, appendText);
+        }
 
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
@@ -216,13 +242,30 @@ namespace client
             examcode = ExamIdTxt.Text;
         }
 
+        private void DirDialogBtn_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
+            if(openFolder1.ShowDialog() == DialogResult.OK)
+            {
+                ImgeFolder.Text = openFolder1.SelectedPath;
+                UploadBtn.Enabled = true;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            LogIn login = new LogIn();
+            login.Show();
+        }
+
         private void StartUploadClick(object sender, EventArgs e)
         {
             String dirpath = ImgeFolder.Text;
             // find image file list in the directory
 
             string[] filelist = Directory.GetFiles(dirpath);
-            
+
             WebClient client = new WebClient();
             
             foreach(String imgpath in filelist)
@@ -230,32 +273,38 @@ namespace client
                 try
                 { 
                     bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
-                    //if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
+                    if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                     {
-                        string hash = Hash_Compute(imgpath);
-                     //   bool hash_server = IsHashAtServer(client, hash);
-                        //if (hash_server == true)
+                        
+                        string hash = HashCompute(imgpath);
+                        bool hashServer = IsHashAtServer(client, hash);
+                        if (hashServer == false)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
-                            progressBar();
+                            string FileName = Path.GetFileNameWithoutExtension(imgpath);
+                            string data = UploadStatus("true", FileName);// create label and display on form
+                            SaveStatus(data); // save in notepad
                         }
-                        //  for each image
-                        // check if image contains qr code
-                        // if yes, check if qrcode text matches examcode
-                        //    if yes, calculate hash of the image
-                        // if hash not at server upload the image, display it to the user and increment value of progress bar
+                        // for each image
+
+                        //check if image contains qr code
+                        //  if yes, check if qrcode text matches examcode
+                        //     if yes, calculate hash of the image
+                        //  if hash not at server upload the image, display it to the user and increment value of progress bar
 
                     }
+                   
                 }
                 catch
                 {
                     // In case of any exception, try the next file.
                 }
             }
-
+           
+            Process.Start(path);
             //Done with uploading... Exit now.
-            System.Windows.Forms.Application.Exit();
+           System.Windows.Forms.Application.Exit();
         }
     }
 }
