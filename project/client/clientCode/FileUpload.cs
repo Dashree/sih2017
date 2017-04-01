@@ -21,6 +21,7 @@ namespace client
     {
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
+        string StatusFile;
         string cUploadUrl = "/upload/file/";
         string cHash = "/upload/hash/";
        // string cImageListPath = @"c:\";
@@ -28,13 +29,13 @@ namespace client
         string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
-        FileStream stream;
+      //  FileStream stream;
         public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
             this.cHash = serverUrl + this.cHash;
-            stream = File.Create(path);
+          // stream = File.Open(path, FileMode.Create);
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
@@ -77,7 +78,6 @@ namespace client
 
             string hash1 = BitConverter.ToString(hash); // converting byte array to string
             hash1 = hash1.Replace("-", "");
-            MessageBox.Show(hash1);
             return hash1;
         }
 
@@ -95,8 +95,8 @@ namespace client
         {
             byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
             //string response = System.Text.Encoding.UTF8.GetString(serverResponse);
-            //MessageBox.Show(response);
             return true;
+
         }
 
         void progressBar()
@@ -141,29 +141,30 @@ namespace client
                 lbl.Text = imgname + " : Image Uploaded Successfully";
             else
                 lbl.Text = imgname + " : Image Skipped";
-            MessageBox.Show(lbl.Text);
             Controls.Add(lbl);
             return lbl.Text;
         }
-        private void SaveStatus(string data)
+        private void SaveStatus(string data, string FilePath)
         {
-           
-
-            // This text is added only once to the file.
-            //if (!File.Exists(path))
-            //{
-            //    string Text = data + Environment.NewLine;
-            //    File.WriteAllText(path, Text);
-            //}
-            //else
-            //{
-            //    string appendText = data + Environment.NewLine;
-            //    File.AppendAllText(path, appendText);
-            //}
-            string appendText = data + Environment.NewLine;
-            File.AppendAllText(path, appendText);
+            //This text is added only once to the file.
+            if (!File.Exists(FilePath))
+            {
+                string Text = data + Environment.NewLine;
+                File.WriteAllText(FilePath, Text);
+               
+            }
+            else
+            {
+                string appendText = data + Environment.NewLine;
+                File.AppendAllText(FilePath, appendText);
+            }
+            // string appendText = data + Environment.NewLine;
+            //File.AppendAllText(path, appendText);
         }
-
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyy/MM/dd  HH:mm:ss");
+        }
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
             bool foundExamId = false;
@@ -251,31 +252,64 @@ namespace client
                 UploadBtn.Enabled = true;
             }
         }
-
+        private void Logout(string StatusFile)
+        {
+            String LogoutTimeStamp = GetTimestamp(DateTime.Now);
+            SaveStatus("Logout Time Stamp", StatusFile);
+            SaveStatus(LogoutTimeStamp + Environment.NewLine, StatusFile);
+            Process.Start(StatusFile);    
+        }
         private void button1_Click(object sender, EventArgs e)
         {
+            Logout(StatusFile);
             this.Hide();
             LogIn login = new LogIn();
             login.Show();
         }
-
+        private string AppendTimeStamp(string fileName)
+        {
+           string WithoutExt = Path.GetFileNameWithoutExtension(fileName);
+           string DtStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+           string Ext = Path.GetExtension(fileName);
+           string StatusFile = WithoutExt + DtStamp + Ext;
+           return StatusFile; 
+        }
+    
+        //private bool Retry()
+        //{
+        //    Button button2 = new Button();
+        //    button2.Location = new Point(90, 155 + x);
+        //    button2.Height = 60;
+        //    button2.Width = 60;
+        //    x = x + 80;
+        //    button2.Text = "Retry";
+        //    if (button2.Click)
+        //        return true;
+        //    return false;
+        //}
         private void StartUploadClick(object sender, EventArgs e)
         {
+            StatusFile = AppendTimeStamp(path);
+            SaveStatus("OMR Sheet Upload Status", StatusFile);
+            String UploadTimeStamp = GetTimestamp(DateTime.Now);
+            SaveStatus("Upload Time:", StatusFile);
+            SaveStatus(UploadTimeStamp + Environment.NewLine, StatusFile);
             String dirpath = ImgeFolder.Text;
             // find image file list in the directory
 
             string[] filelist = Directory.GetFiles(dirpath);
 
             WebClient client = new WebClient();
-            
-            foreach(String imgpath in filelist)
+         
+            foreach (String imgpath in filelist)
             {
                 try
                 { 
+                   // label:
                     bool Qr = IsExamIdFoundInQRCode(imgpath, this.ExamIdTxt.Text);
                     if (Qr == true)     //If QR code is right file is uploaded else skipped(nothing done)
                     {
-                        
+
                         string hash = HashCompute(imgpath);
                         bool hashServer = IsHashAtServer(client, hash);
                         if (hashServer == false)
@@ -284,14 +318,24 @@ namespace client
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("true", FileName);// create label and display on form
-                            SaveStatus(data); // save in notepad
+                            SaveStatus(data, StatusFile); // save in notepad
+                        }
+                        else
+                        {
+                            button(imgpath);
+                            string FileName = Path.GetFileNameWithoutExtension(imgpath);
+                            string data = UploadStatus("false", FileName);// create label and display on form
+                            SaveStatus(data, StatusFile); // save in notepad
+                            //bool retryResponse = Retry();
+                            //if (retryResponse == true)
+                            //    goto label;
                         }
                         // for each image
 
-                        //check if image contains qr code
-                        //  if yes, check if qrcode text matches examcode
-                        //     if yes, calculate hash of the image
-                        //  if hash not at server upload the image, display it to the user and increment value of progress bar
+                            //check if image contains qr code
+                            //  if yes, check if qrcode text matches examcode
+                            //     if yes, calculate hash of the image
+                            //  if hash not at server upload the image, display it to the user and increment value of progress bar
 
                     }
                    
@@ -301,10 +345,10 @@ namespace client
                     // In case of any exception, try the next file.
                 }
             }
-           
-            Process.Start(path);
+            
+            Process.Start(StatusFile);
             //Done with uploading... Exit now.
-           System.Windows.Forms.Application.Exit();
+         //  System.Windows.Forms.Application.Exit();
         }
     }
 }
