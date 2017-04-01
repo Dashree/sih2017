@@ -1,0 +1,16 @@
+syntax: glob
+__pycache__/
+*.sqlite3
+*.pyc
+*.pyo
+.svn/
+.git/
+*.suo
+Debug/
+Release/
+*.csproj.user
+project/server/djangoapp/documents/
+project/client/packages/ZXing.2.1.1/
+project/client/packages/MessagingToolkit.QRCode.1.3.0/
+*.orig
+migrations/
