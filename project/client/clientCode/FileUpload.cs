@@ -367,6 +367,7 @@ namespace client
                     // In case of any exception, try the next file.
                 }
             }
+          
             //Process.Start(hashcode);
             Process.Start(StatusFile);
             //Done with uploading... Exit now.
