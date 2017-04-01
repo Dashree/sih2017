@@ -124,7 +124,7 @@ namespace client
         private void button(String imgPath)
         {
             Button button1 = new Button();
-            button1.Location = new Point(40, 155 + x);
+            button1.Location = new Point(40, 200 + x);
             button1.Height = 60;
             button1.Width = 60;
             x = x + 80;
@@ -141,7 +141,7 @@ namespace client
         private string UploadStatus(string response, string imgname)
         {
             Label lbl = new Label();
-            lbl.Location = new Point(100, 180 + y);
+            lbl.Location = new Point(100, 210 + y);
             y = y + 80;
             lbl.AutoSize = true;
             if (response == "true")
@@ -367,6 +367,7 @@ namespace client
                     // In case of any exception, try the next file.
                 }
             }
+          
             //Process.Start(hashcode);
             Process.Start(StatusFile);
             //Done with uploading... Exit now.

@@ -19,7 +19,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^exam/', include('exam.urls')),
-    url(r'^upload/', include('upload.urls')),
+    url(r'^upload/', include('upload.urls',namespace='upload')),
     url(r'^user/', include('user.urls')),
     url(r'^admin/', admin.site.urls),
     #url(r'^django-rq/', include('django_rq.urls')),
