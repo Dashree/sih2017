@@ -27,15 +27,15 @@ namespace client
        // string cImageListPath = @"c:\";
         String uploadUrl;
         string path = @"c:\temp\uploadStatus.txt";
+       // string hashcode = @" C:\temp\hashcode.txt";
         int x = 0;
         int i = 0;
-      //  FileStream stream;
+        FileStream stream;
         public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
             this.cHash = serverUrl + this.cHash;
-          // stream = File.Open(path, FileMode.Create);
             // [NITIN] Temporarily hardcode image list directory to c:\temp 
             // later ImageFolder path will be set from the FileOpenDialog
             // For testing copy the images to this directory.
@@ -78,7 +78,11 @@ namespace client
 
             string hash1 = BitConverter.ToString(hash); // converting byte array to string
             hash1 = hash1.Replace("-", "");
+            
+           // SaveStatus(hash1, hashcode);
+          
             return hash1;
+           
         }
 
         private bool IsHashAtServer(WebClient webclient, string hash)
@@ -88,6 +92,7 @@ namespace client
 
             string hashurl = this.cHash + hash + "/";
             string response = webclient.DownloadString(hashurl);
+           
             return response.IndexOf("true") >= 0;
         }
 
@@ -257,7 +262,9 @@ namespace client
             String LogoutTimeStamp = GetTimestamp(DateTime.Now);
             SaveStatus("Logout Time Stamp", StatusFile);
             SaveStatus(LogoutTimeStamp + Environment.NewLine, StatusFile);
-            Process.Start(StatusFile);    
+            Process process;
+            process = Process.Start(StatusFile);
+            process.WaitForExit();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -289,6 +296,7 @@ namespace client
         //}
         private void StartUploadClick(object sender, EventArgs e)
         {
+            //stream = File.Open(ImgeFolder.Text, FileMode.Create);
             StatusFile = AppendTimeStamp(path);
             SaveStatus("OMR Sheet Upload Status", StatusFile);
             String UploadTimeStamp = GetTimestamp(DateTime.Now);
@@ -297,7 +305,7 @@ namespace client
             String dirpath = ImgeFolder.Text;
             // find image file list in the directory
 
-            string[] filelist = Directory.GetFiles(dirpath);
+            string[] filelist = Directory.GetFiles(dirpath, "*.jpg");
 
             WebClient client = new WebClient();
          
@@ -330,6 +338,15 @@ namespace client
                             //if (retryResponse == true)
                             //    goto label;
                         }
+                    }
+                    else
+                    {
+                        button(imgpath);
+                        string FileName = Path.GetFileNameWithoutExtension(imgpath);
+                        string data = UploadStatus("false", FileName);// create label and display on form
+                        SaveStatus(data, StatusFile); // save in notepad
+
+                    }
                         // for each image
 
                             //check if image contains qr code
@@ -337,7 +354,7 @@ namespace client
                             //     if yes, calculate hash of the image
                             //  if hash not at server upload the image, display it to the user and increment value of progress bar
 
-                    }
+                    
                    
                 }
                 catch
@@ -345,7 +362,7 @@ namespace client
                     // In case of any exception, try the next file.
                 }
             }
-            
+            //Process.Start(hashcode);
             Process.Start(StatusFile);
             //Done with uploading... Exit now.
          //  System.Windows.Forms.Application.Exit();

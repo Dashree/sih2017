@@ -34,6 +34,7 @@ def upload_file(request):
     '''
     if 'file' in request.FILES:
         scannedimage = ScannedImage(docfile=request.FILES['file'])
+        scannedimage.full_clean()
         scannedimage.save()
 
         response = { 'name' : scannedimage.docfile.name, }
@@ -48,6 +49,7 @@ def check_hash(request, hashvalue):
     check if hash is present or not
     '''
     res = { 'found' : False }
+    hashvalue = hashvalue.lower()
     if ScannedImage.objects.filter(hashval = hashvalue).exists():
         res['found'] = True 
         return JsonResponse(res)
