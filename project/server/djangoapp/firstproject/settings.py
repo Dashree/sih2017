@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 #    'django-rq'
-	'exam.apps.ExamConfig',
+    'exam.apps.ExamConfig',
     'upload.apps.UploadConfig',
     'user.apps.UserConfig',
     'django.contrib.admin',
