@@ -49,7 +49,7 @@ def check_hash(request, hashvalue):
     '''
     res = { 'found' : False }
     if ScannedImage.objects.filter(hashval = hashvalue).exists():
-        res = res['found'] = True 
+        res['found'] = True 
         return JsonResponse(res)
     else:
         return JsonResponse(res)
