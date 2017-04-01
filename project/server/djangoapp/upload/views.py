@@ -13,7 +13,7 @@ from .forms import DocumentForm
 
 
 @require_GET
-#@login_required
+@login_required
 def file_list(request):
     '''
     show list of uploaded file.
