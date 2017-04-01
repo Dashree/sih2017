@@ -143,7 +143,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DodgerBlue;
-            this.ClientSize = new System.Drawing.Size(675, 405);
+            this.ClientSize = new System.Drawing.Size(552, 563);
             this.Controls.Add(this.LogoutBtn);
             this.Controls.Add(this.DirDialogBtn);
             this.Controls.Add(this.ImageFolderLabel);

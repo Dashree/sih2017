@@ -39,7 +39,15 @@ namespace client
             // For testing copy the images to this directory.
            // this.ImgeFolder.Text = cImageListPath;
         }
-        
+        private void retry()
+        {
+            Button button2 = new Button();
+            button2.Click += (s, e) =>
+            {
+
+            };
+            Controls.Add(button2);
+        }
         private void FileUpload_Load(object sender, EventArgs e)
         {
             
@@ -251,7 +259,7 @@ namespace client
         */
         public static String GetTimestamp(DateTime value)
         {
-            return value.ToString("yyyy/MM/dd/  HH:mm:ss");
+            return value.ToString("yyyy/MM/dd  HH:mm:ss");
         }
   
           
