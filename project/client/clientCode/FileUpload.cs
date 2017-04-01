@@ -20,6 +20,7 @@ namespace client
     public partial class FileUpload : Form
     {
         public object BarcodeType { get; private set; }
+        //public string LoginTime;
         private string collegeName, examcode;
         string cUploadUrl = "/upload/file/";
         string cHash = "/upload/hash/";
@@ -28,7 +29,6 @@ namespace client
         string path = @"c:\temp\uploadStatus.txt";
         int x = 0;
         int i = 0;
-
         public FileUpload(string serverUrl, WebClient webclient)
         {
             InitializeComponent();
@@ -39,9 +39,10 @@ namespace client
             // For testing copy the images to this directory.
            // this.ImgeFolder.Text = cImageListPath;
         }
-
+        
         private void FileUpload_Load(object sender, EventArgs e)
         {
+            
 
         }
 
@@ -83,7 +84,7 @@ namespace client
         private bool IsHashAtServer(WebClient webclient, string hash)
         {
             int status;
-            bool hash_server = true;
+            bool hash_server = false;
             try
             {
                 cHash = cHash + hash;
@@ -98,7 +99,7 @@ namespace client
                 {
                     status = (int)response.StatusCode;// gives integer value of response( to be used for comparison)
                     MessageBox.Show(status.ToString());
-                    hash_server = false;
+                    hash_server = true;
                 }
                 //if (response.StatusCode != HttpStatusCode.OK)
                 //{
@@ -248,7 +249,13 @@ namespace client
             }
         }
         */
-
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyy/MM/dd/  HH:mm:ss");
+        }
+  
+          
+        
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             collegeName = CollegeIdTxt.Text;
@@ -261,6 +268,7 @@ namespace client
 
         private void DirDialogBtn_Click(object sender, EventArgs e)
         {
+            
             FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
             if(openFolder1.ShowDialog() == DialogResult.OK)
             {
@@ -271,6 +279,10 @@ namespace client
 
         private void button1_Click(object sender, EventArgs e)
         {
+            SaveStatus("Logout Time : ") ;
+            String LOtimeStamp = GetTimestamp(DateTime.Now);
+            SaveStatus(LOtimeStamp + Environment.NewLine);
+            Process.Start(path);
             this.Hide();
             LogIn login = new LogIn();
             login.Show();
@@ -278,6 +290,10 @@ namespace client
 
         private void StartUploadClick(object sender, EventArgs e)
         {
+            SaveStatus("OMR-sheet Uploading Status" + Environment.NewLine);
+            SaveStatus("Upload Started Time:");
+            String UploadtimeStamp = GetTimestamp(DateTime.Now);
+            SaveStatus(UploadtimeStamp + Environment.NewLine);
             String dirpath = ImgeFolder.Text;
             // find image file list in the directory
 
@@ -294,9 +310,9 @@ namespace client
                     {
                         
                         string hash = Hash_Compute(imgpath);
-                        bool hashServer = IsHashAtServer(client, hash);
+                        bool hash_Server = IsHashAtServer(client, hash);
                         
-                        if (hashServer == false)
+                        if (hash_Server == false)
                         {
                             this.UploadImage(client, imgpath);
                             button(imgpath);
@@ -324,7 +340,7 @@ namespace client
             // Process process = new Process();
             Process.Start(path);
             //Done with uploading... Exit now.
-            System.Windows.Forms.Application.Exit();
+            //System.Windows.Forms.Application.Exit();
         }
     }
 }

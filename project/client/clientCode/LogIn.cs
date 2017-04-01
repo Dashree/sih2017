@@ -24,6 +24,10 @@ namespace client
             this.serverUrl = serverUrl;
             this.loginUrl = this.serverUrl + this.loginUrl;
         }
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyy/MM/dd/  HH:mm:ss");
+        }
 
         //private bool login(string username, string password)
         //{
@@ -54,10 +58,14 @@ namespace client
         {
     //       if (login(userNameBox.Text, this.passwordBox.Text) == true)
             {
+                       
+                
                 label3.Visible = false;
                 this.Hide();
                 FileUpload upload = new FileUpload(this.serverUrl, webclient);
+              
                 upload.Show();
+
             }
             //else
             //{
