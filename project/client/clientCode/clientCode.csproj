@@ -49,6 +49,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CookieWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FileUpload.cs">
       <SubType>Form</SubType>
     </Compile>
