@@ -13,7 +13,7 @@ from .forms import DocumentForm
 
 
 @require_GET
-@login_reqired
+@login_required
 def file_list(request):
     '''
     show list of uploaded file.
@@ -30,7 +30,7 @@ def file_list(request):
     )
 
 @require_POST
-@login_reqired
+@login_required
 def upload_file(request):
     '''
     upload single file
@@ -47,7 +47,7 @@ def upload_file(request):
         return HttpResponseNotFound("Unable to upload file")
 
 @require_GET
-@login_reqired
+@login_required
 def check_hash(request, hashvalue):
     '''
     check if hash is present or not
@@ -62,11 +62,13 @@ def check_hash(request, hashvalue):
     
 @require_GET
 def download_template(request, examid):
-    '''
-    give download url to workers
-    '''
     template=ExamInfo.objects.filter(id=examid)
-    return JsonResponse(template.template)      #examid is passed by the url and equivalent to the default id of ExamInfo table
+    filename = "downloadedtemplate_%d" %examid
+    response = HttpResponse(template.docfile, content_type='image/jpeg')
+         #examid is passed by the url and equivalent to the default id of ExamInfo table
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename 
+
+    return response
 
 @require_GET
 def download_scannedimage(request, imageid):
