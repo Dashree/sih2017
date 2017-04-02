@@ -54,7 +54,7 @@ def login_user(request):
                 login(request, user)
                 omrsession = OMR_Session(user=user)
                 omrsession.save()
-                request.session.omrsession = omrsession
+                request.session['omrsession'] = omrsession.id
                 return redirect('upload:list')
             else:
                 return render(request, 'login.html', {'error_message': 'Your account has been disabled'}, status=401)

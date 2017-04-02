@@ -11,7 +11,7 @@ from exam.models import ExamInfo
 from .models import ScannedImage
 from .forms import DocumentForm
 from exam import models 
-
+from user.models import OMR_Session
 
 @require_GET
 @login_required
@@ -33,8 +33,8 @@ def scanned_list(request):
     show list of uploaded file.
     '''
     # Load documents for the list page
-    user= request.session.omrsession.user
-    documents = ScannedImage.objects.filter(session__user=user)
+    cursesion = OMR_Session.objects.get(id=request.session['omrsession'])
+    documents = ScannedImage.objects.filter(session__user=cursesion.user)
     #assert len(documents) > 0
     # Render list page with the documents and the form
     return render(
@@ -53,7 +53,7 @@ def upload_file(request,examcode,stdrollno):
     student = StudentInfo.objects.get_or_create(rollno = stdrollno)
     
     if 'file' in request.FILES:
-        scannedimage = ScannedImage(docfile=request.FILES['file'], session=request.session.omrsession)
+        scannedimage = ScannedImage(docfile=request.FILES['file'], session=request.session['omrsession'])
         scannedimage.full_clean()
         scannedimage.save()
 
