@@ -10,7 +10,7 @@ from hueyconfig import huey  # import our "huey" object
 ANSWERPAPER_URL = "/upload/image/%s/"
 OCTAVE_PATH = "C:/temp"
 
-#@huey.task()
+@huey.task()
 def detect(host_name, examid, studentid, scannedimageid):
     print("downloading mage")
     model_answer_url = "exam/%s/download/modelanswer/" % examid

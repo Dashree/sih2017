@@ -63,7 +63,6 @@
             // CollegeIdLabel
             // 
             this.CollegeIdLabel.AutoSize = true;
-            this.CollegeIdLabel.Enabled = false;
             this.CollegeIdLabel.Location = new System.Drawing.Point(245, 18);
             this.CollegeIdLabel.Name = "CollegeIdLabel";
             this.CollegeIdLabel.Size = new System.Drawing.Size(73, 13);
@@ -101,7 +100,6 @@
             // ImageFolderLabel
             // 
             this.ImageFolderLabel.AutoSize = true;
-            this.ImageFolderLabel.Enabled = false;
             this.ImageFolderLabel.Location = new System.Drawing.Point(249, 95);
             this.ImageFolderLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ImageFolderLabel.Name = "ImageFolderLabel";

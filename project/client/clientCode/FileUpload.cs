@@ -109,21 +109,6 @@ namespace client
             return false;
         }
 
-        //void progressBar()
-        //{
-        //    ProgressBar progressbar1 = new ProgressBar();
-        //    progressbar1.Enabled = true;
-        //    progressbar1.Value = i + 1;
-        //    progressbar1.Location = new Point(318, 90);
-        //    Controls.Add(progressbar1);
-        //    label.Enabled = true;
-        //    label.Visible = true;
-        //    label.Location = new Point(318, 75);
-        //    label.Text = progressbar1.Value + " images uploaded";
-        //    Controls.Add(label);
-        //    i++;
-        //}
-
         private void button(String imgPath)
         {
             Button button1 = new Button();
@@ -137,7 +122,6 @@ namespace client
             Controls.Add(button1);
             button1.Show();
             this.AutoScroll = true;
-            //progressBar();
         }
 
         private string UploadStatus(string response, string imgname)
