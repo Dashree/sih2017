@@ -12,11 +12,15 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import site
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-workerdir = os.path.normpath(os.path.join(BASE_DIR, '..', '..', 'worker'))
+workerdir = os.path.normpath(os.path.join(BASE_DIR, '..', '..', 'workers','pyworker'))
+workerdir = os.path.abspath(workerdir)
+assert os.path.exists(workerdir)
+sys.path.append(workerdir)
 #causing problems for some auth_user table. Don't know why
 #site.addsitedir(workerdir)
 

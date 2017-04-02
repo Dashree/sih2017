@@ -12,6 +12,7 @@ from .models import ScannedImage
 from .forms import DocumentForm
 from exam import models 
 from user.models import OMR_Session
+from worker import detect, worker_test
 
 @require_GET
 @login_required
@@ -58,12 +59,14 @@ def upload_file(request,examcode,stdrollno):
         scannedimage.full_clean()
         scannedimage.save()
 
-        worker_enable = False
+        worker_enable = True
         if worker_enable == True:
-            from worker import detect
-            host = requst.get_host()
-            exam = ExamInfo.objects.get(examcode = examcode)
-            detect(host, exam.id,student.id, scannedimage.id)
+            
+            host = request.get_host()
+            #exam = ExamInfo.objects.get(examcode = examcode)
+            examid = 10
+            #detect(host, exam.id,student.id, scannedimage.id)
+            worker_test(host, examid)
         
         response = { 'name' : scannedimage.docfile.name, }
         # Redirect to the document list after POST
