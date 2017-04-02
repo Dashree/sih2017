@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import ScannedImage
-
+from exam.models import AnswerSheetMarks, AnswersheetTemplate, ExamInfo, StudentInfo
 from django.template import RequestContext
 from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
 from django.core.urlresolvers import reverse
@@ -77,15 +77,6 @@ def check_hash(request, hashvalue):
     else:
         return JsonResponse(res)
     
-@require_GET
-def download_template(request, examid):
-    template=ExamInfo.objects.filter(id=examid)
-    filename = "downloadedtemplate_%d" %examid
-    response = HttpResponse(template.docfile, content_type='image/jpeg')
-         #examid is passed by the url and equivalent to the default id of ExamInfo table
-    response['Content-Disposition'] = 'attachment; filename=%s' % filename 
-
-    return response
 
 @require_GET
 def download_scannedimage(request, imageid):
@@ -96,3 +87,42 @@ def download_scannedimage(request, imageid):
 
     return response
 
+@require_GET
+def download_rollnumbersect(request, examcode):
+    exam = ExamInfo.objects.get(id=examcode)
+    image = exam.templateinfo.rollnumbersect
+    filename = "rollnumbersect_%s" %examcode
+    response = HttpResponse(image.docfile, content_type='image/jpeg')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename 
+
+    return response
+
+@require_GET
+def download_centrecodesect(request, examcode):
+    exam = ExamInfo.objects.get(id=examcode)
+    image = exam.templateinfo.centrecodesect
+    filename = "centrecodesect_%s" %examcode
+    response = HttpResponse(image.docfile, content_type='image/jpeg')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename 
+
+    return response
+
+@require_GET
+def download_answercolumnsect(request, examcode):
+    exam = ExamInfo.objects.get(id=examcode)
+    image = exam.templateinfo.answercolumnsect
+    filename = "answercolumnsect_%s" %examcode
+    response = HttpResponse(image.docfile, content_type='image/jpeg')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    
+    return response
+
+@require_GET
+def download_completetemplate(request, examcode):
+    exam = ExamInfo.objects.get(id=examcode)
+    image = exam.templateinfo.answercolumnsect
+    filename = "completetemplate_%s" %examcode
+    response = HttpResponse(image.docfile, content_type='image/jpeg')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    
+    return response
