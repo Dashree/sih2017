@@ -2,7 +2,7 @@
 
 from django.conf.urls import url
 
-from .views import scanned_list,upload_file,check_hash,all_image_list
+from .views import scanned_list,upload_file,check_hash,all_image_list,download_scannedimage
 
 urlpatterns = [
     url(r'^list/scannedimages/$', scanned_list , name = 'list'),
@@ -12,6 +12,6 @@ urlpatterns = [
     #url(r'^file/$', upload_file, name= 'fileupload'),
     url(r'^file/(?P<examcode>\w+)/(?P<stdrollno>\w+)/$', upload_file, name= 'fileupload'),
     url(r'^hash/(?P<hashvalue>\w+)/$', check_hash, name='checkhash'),
-    #url(r'^image/(?P<imageid>\w+)/$', download_image, name='imagedownload'),
+    url(r'^image/(?P<imageid>\w+)/$', download_scannedimage, name='imagedownload'),
     #url(r'^template/(?P<examid>\w+)/$', download_template, name='templatedownload')
    ]
