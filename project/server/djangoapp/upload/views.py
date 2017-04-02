@@ -47,10 +47,12 @@ def check_hash(request, hashvalue):
     '''
     check if hash is present or not
     '''
-    if ScannedImage.objects.filter(hashval = hashvalue):
-        return JsonResponse(status_code = 200)
+    res = { 'found' : False }
+    if ScannedImage.objects.filter(hashval = hashvalue).exists():
+        res = res['found'] = True 
+        return JsonResponse(res)
     else:
-        return JsonResponse(status_code = 404)
+        return JsonResponse(res)
     
 @require_POST
 def download_template(request, examid):

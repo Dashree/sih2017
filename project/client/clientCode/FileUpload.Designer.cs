@@ -37,6 +37,7 @@
             this.ImgeFolder = new System.Windows.Forms.TextBox();
             this.ImageFolderLabel = new System.Windows.Forms.Label();
             this.DirDialogBtn = new System.Windows.Forms.Button();
+            this.LogoutBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CollegeIdTxt
@@ -76,9 +77,10 @@
             // 
             // UploadBtn
             // 
+            this.UploadBtn.Enabled = false;
             this.UploadBtn.Location = new System.Drawing.Point(108, 131);
             this.UploadBtn.Name = "UploadBtn";
-            this.UploadBtn.Size = new System.Drawing.Size(142, 23);
+            this.UploadBtn.Size = new System.Drawing.Size(121, 28);
             this.UploadBtn.TabIndex = 4;
             this.UploadBtn.Text = "Start Upload";
             this.UploadBtn.UseVisualStyleBackColor = true;
@@ -95,9 +97,8 @@
             // ImgeFolder
             // 
             this.ImgeFolder.Location = new System.Drawing.Point(108, 89);
-            this.ImgeFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ImgeFolder.Margin = new System.Windows.Forms.Padding(2);
             this.ImgeFolder.Name = "ImgeFolder";
-            this.ImgeFolder.ReadOnly = true;
             this.ImgeFolder.Size = new System.Drawing.Size(201, 20);
             this.ImgeFolder.TabIndex = 6;
             // 
@@ -114,19 +115,32 @@
             // 
             // DirDialogBtn
             // 
-            this.DirDialogBtn.Location = new System.Drawing.Point(323, 92);
-            this.DirDialogBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DirDialogBtn.Location = new System.Drawing.Point(323, 93);
+            this.DirDialogBtn.Margin = new System.Windows.Forms.Padding(2);
             this.DirDialogBtn.Name = "DirDialogBtn";
             this.DirDialogBtn.Size = new System.Drawing.Size(50, 15);
             this.DirDialogBtn.TabIndex = 8;
             this.DirDialogBtn.Text = "***";
             this.DirDialogBtn.UseVisualStyleBackColor = true;
+            this.DirDialogBtn.Click += new System.EventHandler(this.DirDialogBtn_Click);
+            // 
+            // LogoutBtn
+            // 
+            this.LogoutBtn.Location = new System.Drawing.Point(258, 131);
+            this.LogoutBtn.Name = "LogoutBtn";
+            this.LogoutBtn.Size = new System.Drawing.Size(75, 28);
+            this.LogoutBtn.TabIndex = 10;
+            this.LogoutBtn.Text = "Logout";
+            this.LogoutBtn.UseVisualStyleBackColor = true;
+            this.LogoutBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // FileUpload
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 317);
+            this.BackColor = System.Drawing.Color.Cyan;
+            this.ClientSize = new System.Drawing.Size(395, 329);
+            this.Controls.Add(this.LogoutBtn);
             this.Controls.Add(this.DirDialogBtn);
             this.Controls.Add(this.ImageFolderLabel);
             this.Controls.Add(this.ImgeFolder);
@@ -156,5 +170,6 @@
         private System.Windows.Forms.TextBox ImgeFolder;
         private System.Windows.Forms.Label ImageFolderLabel;
         private System.Windows.Forms.Button DirDialogBtn;
+        private System.Windows.Forms.Button LogoutBtn;
     }
 }
