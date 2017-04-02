@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import download_rollnumbersect, download_centrecodesect, download_answercolumnsect
+from upload.views import download_rollnumbersect, download_centrecodesect, download_answercolumnsect,download_completetemplate
 
 
 from . import views
@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'^(?P<examid>\w+)/template/rollnosect$', download_rollnumbersect, name='download_rollnumbersect'),
     url(r'^(?P<examid>\w+)/template/centrecodesect$', download_centrecodesect, name='centrecodedownload'),
     url(r'^(?P<examid>\w+)/template/answercolumnsect$', download_answercolumnsect, name='answercolumndownload'),
-    #url(r'^(?P<examid>\w+)/template/completetemplate$', download_completetemplate, name='completetemplatedownload'),
+    url(r'^(?P<examid>\w+)/template/completetemplate$', download_completetemplate, name='completetemplatedownload'),
 ]
