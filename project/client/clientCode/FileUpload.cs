@@ -22,7 +22,7 @@ namespace client
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
         private string StatusFile;
-        private string cUploadUrl = "/upload/file/";
+        private string cUploadUrl = "/upload/file/{0}/{1}/";
         private string cHash = "/upload/hash/";
         private string path = @"c:\temp\uploadStatus.txt";
         private String uploadUrl;
@@ -32,8 +32,8 @@ namespace client
         private int i = 0;
         private FileStream statusStream;
         private StreamWriter statusWriter;
-
-        public FileUpload(string serverUrl, WebClient webclient)
+        private string loginTime;
+        public FileUpload(string serverUrl, WebClient webclient, string lgTime)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
@@ -43,6 +43,7 @@ namespace client
             // For testing copy the images to this directory.
             // this.ImgeFolder.Text = cImageListPath;
             this.client = webclient;
+            this.loginTime = lgTime;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -99,9 +100,10 @@ namespace client
             return response.IndexOf("true") >= 0;
         }
 
-        private bool UploadImage(WebClient webclient, string filePath)
+        private bool UploadImage(WebClient webclient, string studentid, string filePath)
         {
-            byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
+            string url = String.Format(this.uploadUrl, ExamIdTxt.Text, studentid);
+            byte[] serverResponse = webclient.UploadFile(url, filePath);
             //string response = System.Text.Encoding.UTF8.GetString(serverResponse);
             return true;
 
@@ -154,25 +156,14 @@ namespace client
         }
         private void SaveStatus(string data)
         {
-            //This text is added only once to the file.
-            //if (!File.Exists(FilePath))
-            //{
-            //    string Text = data + Environment.NewLine;
-            //    File.WriteAllText(FilePath, Text);
-
-            //}
-            //else
-            //{
-            //    string appendText = data + Environment.NewLine;
-            //    File.AppendAllText(FilePath, appendText);
-            //}
             this.statusWriter.WriteLine(data);
-            
         }
+
         public static String GetTimestamp(DateTime value)
         {
             return value.ToString("yyyy/MM/dd  HH:mm:ss");
         }
+
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
             bool foundExamId = false;
@@ -185,11 +176,10 @@ namespace client
                 QRCodeReader reader = new QRCodeReader();
                 Result qrDecode = reader.decode(imgBinarybmp);
                 String qrExamId = qrDecode.ToString();
-                MessageBox.Show(qrExamId);
                 if (String.Compare(qrExamId, ExamIdTxt.Text) == 0)
                     foundExamId = true;
             }
-            catch
+            catch (Exception exp)
             {
                 foundExamId = false;
             }
@@ -269,7 +259,9 @@ namespace client
             this.statusStream.Close();
             Process process;
             process = Process.Start(statusfile);
-            process.WaitForExit();
+            //Done with uploading... Exit now.
+            System.Windows.Forms.Application.Exit();
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -292,25 +284,21 @@ namespace client
 
         }
 
-        //private bool Retry()
-        //{
-        //    Button button2 = new Button();
-        //    button2.Location = new Point(90, 155 + x);
-        //    button2.Height = 60;
-        //    button2.Width = 60;
-        //    x = x + 80;
-        //    button2.Text = "Retry";
-        //    if (button2.Click)
-        //        return true;
-        //    return false;
-        //}
+        private string getStudentId(string imgpath)
+        {
+            string dummyStudentId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            return dummyStudentId;
+        }
+
         private void StartUploadClick(object sender, EventArgs e)
         {
+           
             StatusFile = AppendTimeStamp(path);
             StatusFile = ImgeFolder.Text + "/" + StatusFile;
             this.statusStream = File.Open(StatusFile, FileMode.Create, FileAccess.ReadWrite);
             this.statusWriter= new StreamWriter(this.statusStream);
 
+            SaveStatus("LogIn Time:" + loginTime);
             SaveStatus("OMR Sheet Upload Status");
 
             String UploadTimeStamp = GetTimestamp(DateTime.Now);
@@ -334,7 +322,8 @@ namespace client
                         bool hashServer = IsHashAtServer(this.client, hash);
                         if (hashServer == false)
                         {
-                            this.UploadImage(this.client, imgpath);
+                            string studentid = getStudentId(imgpath);
+                            this.UploadImage(this.client, studentid, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("true", FileName);// create label and display on form
@@ -375,9 +364,6 @@ namespace client
                 }
             }
             
-            
-            //Done with uploading... Exit now.
-         //  System.Windows.Forms.Application.Exit();
         }
     }
 }

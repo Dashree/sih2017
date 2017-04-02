@@ -24,10 +24,9 @@ class ExamInfo(models.Model):
 
 #This table contains the basic and original student information.
 class StudentInfo(models.Model):
-    Roll_no = models.CharField(max_length=10, unique=True, null=True)
-    student_name = models.CharField(max_length=100)
-    #centre_name = models.CharField(max_length=100)
-    examid = models.ForeignKey(ExamInfo)
+    rollno = models.CharField(max_length=10, unique=True, null=True)
+    student_name = models.CharField(max_length=100, default='student')
+    examid = models.ForeignKey(ExamInfo, null=True)
 
 #[This table will hold the marks(Question wise marks) when they come from the workers.]
 class AnswerSheetMarks(models.Model):
