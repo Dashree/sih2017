@@ -289,6 +289,7 @@ namespace client
                             string studentid = getStudentId(imgpath);
                             
                             bool ResponseUpload = this.UploadImage(this.client, studentid, imgpath);
+                            MessageBox.Show(ResponseUpload.ToString());
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus(ResponseUpload.ToString(), FileName);// create label and display on form
