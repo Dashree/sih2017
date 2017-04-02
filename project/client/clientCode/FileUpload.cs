@@ -28,7 +28,7 @@ namespace client
         private String uploadUrl;
         private WebClient client;
         private int x = 0, y = 0;
-         //private int i = 0;
+        private int countSkip = 0, countUploaded = 0;
         private FileStream statusStream;
         private StreamWriter statusWriter;
         private string loginTime;
@@ -84,21 +84,29 @@ namespace client
         private bool IsHashAtServer(WebClient webclient, string hash)
         {
             int status;
-            bool hash_server = false;
+           // bool hash_server = false;
 
             string hashurl = this.cHash + hash + "/";
             string response = webclient.DownloadString(hashurl);
-           
             return response.IndexOf("true") >= 0;
         }
 
         private bool UploadImage(WebClient webclient, string studentid, string filePath)
         {
-            string url = String.Format(this.uploadUrl, ExamIdTxt.Text, studentid);
-            byte[] serverResponse = webclient.UploadFile(url, filePath);
-            //string response = System.Text.Encoding.UTF8.GetString(serverResponse);
-            return true;
-
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    string url = String.Format(this.uploadUrl, ExamIdTxt.Text, studentid);
+                    byte[] serverResponse = webclient.UploadFile(url, filePath);
+                    return true;
+                }
+                catch
+                {
+                    //Retry
+                }
+            }
+            return false;
         }
 
         //void progressBar()
@@ -139,9 +147,19 @@ namespace client
             y = y + 80;
             lbl.AutoSize = true;
             if (response == "true")
+            {
+                countUploaded++;
                 lbl.Text = imgname + " : Image Uploaded Successfully";
+                lbl.ForeColor = Color.Green;
+                lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            }
             else
-                lbl.Text = imgname + " : Image Skipped";
+            {
+                countSkip++;
+                lbl.Text = imgname + " : *Image Skipped";
+                lbl.ForeColor = Color.Red;
+                lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            }
             Controls.Add(lbl);
             return lbl.Text;
         }
@@ -245,7 +263,7 @@ namespace client
             this.statusWriter= new StreamWriter(this.statusStream);
 
             SaveStatus("LogIn Time:" + loginTime);
-            SaveStatus("OMR Sheet Upload Status");
+            SaveStatus("*****************OMR Sheet Upload Status********************");
 
             String UploadTimeStamp = GetTimestamp(DateTime.Now);
             SaveStatus("Upload Time:" + UploadTimeStamp);
@@ -270,10 +288,10 @@ namespace client
                         {
                             string studentid = getStudentId(imgpath);
                             
-                            this.UploadImage(this.client, studentid, imgpath);
+                            bool ResponseUpload = this.UploadImage(this.client, studentid, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
-                            string data = UploadStatus("true", FileName);// create label and display on form
+                            string data = UploadStatus(ResponseUpload.ToString(), FileName);// create label and display on form
                             SaveStatus(data); // save in notepad
                         }
                         else
@@ -281,7 +299,7 @@ namespace client
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("false", FileName);// create label and display on form
-                            SaveStatus( data); // save in notepad
+                            SaveStatus(data); // save in notepad
                         }
                     }
                     else
@@ -305,6 +323,8 @@ namespace client
                 }
             }
             
+            SaveStatus("Number of uploaded images in this session : " + countUploaded.ToString());
+            SaveStatus("Number of skipped images in this session : " + countSkip.ToString());
         }
     }
 }
