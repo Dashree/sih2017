@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import ScannedImage
 from exam.models import AnswerSheetMarks, ExamInfo, StudentInfo
 from django.template import RequestContext
-from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect,HttpResponseNotFound,JsonResponse
 from django.core.urlresolvers import reverse
 
 from django.views.decorators.http import require_GET, require_POST
@@ -51,7 +51,7 @@ def upload_file(request,examcode,stdrollno):
     upload single file
     '''
     #exam = ExamInfo.objects.get(examcode = exmid)
-    student = StudentInfo.objects.get_or_create(rollno = stdrollno)
+    student, created = StudentInfo.objects.get_or_create(rollno = stdrollno)
     
     if 'file' in request.FILES:
         session = OMR_Session.objects.get(id=request.session['omrsession'])
@@ -62,11 +62,11 @@ def upload_file(request,examcode,stdrollno):
         worker_enable = True
         if worker_enable == True:
             
-            host = request.get_host()
+            host = "http://"+request.get_host()
             #exam = ExamInfo.objects.get(examcode = examcode)
-            examid = 10
-            #detect(host, exam.id,student.id, scannedimage.id)
-            worker_test(host, examid)
+            examid = 2
+            detect(host, examid,student.id, scannedimage.id)
+            #worker_test(host, examid)
         
         response = { 'name' : scannedimage.docfile.name, }
         # Redirect to the document list after POST
@@ -92,7 +92,7 @@ def check_hash(request, hashvalue):
 @require_GET
 def download_scannedimage(request, imageid):
     image = ScannedImage.objects.get(id=imageid)    
-    filename = "scannedanswer_%d" %imageid
+    filename = "scannedanswer_%s" %imageid
     response = HttpResponse(image.docfile, content_type='image/jpeg')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename 
 
