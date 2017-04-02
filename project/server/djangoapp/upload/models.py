@@ -9,6 +9,7 @@ class ScannedImage(models.Model):
     '''
     represents scanned image uploaded to server.
     '''
+    imageid = models.CharField(max_length=100, unique=True)
     docfile = models.FileField(upload_to='documents/%d')
     hashval = models.CharField(max_length=128, null=False, blank=False,editable=False,db_index=True, unique=True)
     imgsize =  models.IntegerField(editable=False)
@@ -23,3 +24,5 @@ class ScannedImage(models.Model):
         self.hashval = hasher.hexdigest()
         self.hashval = self.hashval.lower()
         self.imgsize = self.docfile.size
+        
+    

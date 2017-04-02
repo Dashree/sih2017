@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.utils import timezone
 from django.views.generic import View
 from .forms import RegisterUser
 #from .upload import views
@@ -51,7 +52,8 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-
+                login_time = timezone.now()
+                
                 return redirect('upload:list')
             else:
                 return render(request, 'login.html', {'error_message': 'Your account has been disabled'}, status=401)
@@ -62,4 +64,5 @@ def login_user(request):
 
 def logout_view(request):
     logout(request)
+    logout_time = timezone.now()
     # Redirect to a success page.

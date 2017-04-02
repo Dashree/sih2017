@@ -15,22 +15,6 @@ def marks_detection_worker(imageid,examid):
     model_answer_url = "http://localhost/exam/%s/download/modelanswer/" % examid
     student_answer_sheet =  r'C:\sih2017\testdata\templates\omr5new.jpg'
     
-    marks = detect(model_answer_url, student_answer_sheet)
-    print('hello')
-    send_marks(url, examid, imageid, marks)
+    detect(model_answer_url, student_answer_sheet)
     
-
-def send_marks(url, examid, imageid, marks):
-##    url = '/exam/<examid>/marks/<imageid>'
-##    request.post(url, marks)
-    return 'hello'
-
-def download_image(url):
-    #url = 'C:\sih2017\testdata\templates\omr4new.jpg'
-    response = requests.get(url, stream=True)
-    return 'checked'
-
-##if __name__ == "__main__":
-##    #marks_detection_worker(10, 10)
-##    download_image(url)
     
