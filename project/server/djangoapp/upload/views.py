@@ -15,6 +15,19 @@ from exam import models
 
 @require_GET
 @login_required
+def all_image_list(request):
+    form = DocumentForm()  # A empty, unbound form
+    documents = ScannedImage.objects.all()
+    #assert len(documents) > 0
+    # Render list page with the documents and the form
+    return render(
+       request,
+        'list.html',
+        {'documents': documents, 'form': form}
+    )
+
+@require_GET
+@login_required
 def scanned_list(request, uid):
     '''
     show list of uploaded file.
@@ -36,11 +49,11 @@ def upload_file(request,exmid,stdid):
     '''
     upload single file
     '''
-    exam = ExamInfo.objects.get(id = exmid)
-    student = StudentInfo.objects.get(id = stdid)
+    #exam = ExamInfo.objects.get(examcode = exmid)
+    #student = StudentInfo.objects.get(id = stdid)
     
     if 'file' in request.FILES:
-        scannedimage = ScannedImage(docfile=request.FILES['file'],examid = exam,studentid = student)
+        scannedimage = ScannedImage(docfile=request.FILES['file'])
         scannedimage.full_clean()
         scannedimage.save()
 

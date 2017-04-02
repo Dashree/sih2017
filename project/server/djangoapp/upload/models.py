@@ -15,8 +15,8 @@ class ScannedImage(models.Model):
     imgsize =  models.IntegerField(editable=False)
     studentid = models.ForeignKey(StudentInfo, null=True, blank=True)
     #session = models.ForeignKey(XGenSession)
-    userid = models.ForeignKey(User)
-    examid = models.ForeignKey(ExamInfo)
+    userid = models.ForeignKey(User, null=True, blank=True)
+    examid = models.ForeignKey(ExamInfo,null=True, blank=True)
 
     def clean(self):
         #automatically hashval function based on content of file object
