@@ -17,7 +17,8 @@ import site
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 workerdir = os.path.normpath(os.path.join(BASE_DIR, '..', '..', 'worker'))
-site.addsitedir(workerdir)
+#causing problems for some auth_user table. Don't know why
+#site.addsitedir(workerdir)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
