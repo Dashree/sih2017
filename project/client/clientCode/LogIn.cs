@@ -44,7 +44,6 @@ namespace client
             catch (WebException exp)
             {
                 HttpWebResponse response = (System.Net.HttpWebResponse)exp.Response;
-                //MessageBox.Show(response.ToString);
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     logged_in = false;

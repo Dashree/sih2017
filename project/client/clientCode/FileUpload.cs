@@ -27,21 +27,17 @@ namespace client
         private string path = @"c:\temp\uploadStatus.txt";
         private String uploadUrl;
         private WebClient client;
-        // string hashcode = @" C:\temp\hashcode.txt";
-        private int x = 0;
-        private int i = 0;
+        private int x = 0, y = 0;
+         //private int i = 0;
         private FileStream statusStream;
         private StreamWriter statusWriter;
         private string loginTime;
+
         public FileUpload(string serverUrl, WebClient webclient, string lgTime)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
             this.cHash = serverUrl + this.cHash;
-            // [NITIN] Temporarily hardcode image list directory to c:\temp 
-            // later ImageFolder path will be set from the FileOpenDialog
-            // For testing copy the images to this directory.
-            // this.ImgeFolder.Text = cImageListPath;
             this.client = webclient;
             this.loginTime = lgTime;
         }
@@ -82,11 +78,7 @@ namespace client
 
             string hash1 = BitConverter.ToString(hash); // converting byte array to string
             hash1 = hash1.Replace("-", "");
-            
-           // SaveStatus(hash1, hashcode);
-          
-            return hash1;
-           
+            return hash1; 
         }
 
         private bool IsHashAtServer(WebClient webclient, string hash)
@@ -109,20 +101,20 @@ namespace client
 
         }
 
-        void progressBar()
-        {
-            ProgressBar progressbar1 = new ProgressBar();
-            progressbar1.Enabled = true;
-            progressbar1.Value = i + 1;
-            progressbar1.Location = new Point(318, 90);
-            Controls.Add(progressbar1);
-            label.Enabled = true;
-            label.Visible = true;
-            label.Location = new Point(318, 75);
-            label.Text = progressbar1.Value + " images uploaded";
-            Controls.Add(label);
-            i++;
-        }
+        //void progressBar()
+        //{
+        //    ProgressBar progressbar1 = new ProgressBar();
+        //    progressbar1.Enabled = true;
+        //    progressbar1.Value = i + 1;
+        //    progressbar1.Location = new Point(318, 90);
+        //    Controls.Add(progressbar1);
+        //    label.Enabled = true;
+        //    label.Visible = true;
+        //    label.Location = new Point(318, 75);
+        //    label.Text = progressbar1.Value + " images uploaded";
+        //    Controls.Add(label);
+        //    i++;
+        //}
 
         private void button(String imgPath)
         {
@@ -139,8 +131,7 @@ namespace client
             this.AutoScroll = true;
             //progressBar();
         }
-        //int count = 0;
-        int y = 0;
+
         private string UploadStatus(string response, string imgname)
         {
             Label lbl = new Label();
@@ -291,9 +282,6 @@ namespace client
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("false", FileName);// create label and display on form
                             SaveStatus( data); // save in notepad
-                                                            //bool retryResponse = Retry();
-                                                            //if (retryResponse == true)
-                                                            //    goto label;
                         }
                     }
                     else
@@ -310,9 +298,6 @@ namespace client
                     //  if yes, check if qrcode text matches examcode
                     //     if yes, calculate hash of the image
                     //  if hash not at server upload the image, display it to the user and increment value of progress bar
-
-
-
                 }
                 catch
                 {
