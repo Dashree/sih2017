@@ -1,7 +1,8 @@
 import hashlib
 
 from django.db import models
-from exam.models import StudentInfo
+from exam.models import StudentInfo,ExamInfo
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -14,6 +15,8 @@ class ScannedImage(models.Model):
     imgsize =  models.IntegerField(editable=False)
     studentid = models.ForeignKey(StudentInfo, null=True, blank=True)
     #session = models.ForeignKey(XGenSession)
+    userid = models.ForeignKey(User)
+    examid = models.ForeignKey(ExamInfo)
 
     def clean(self):
         #automatically hashval function based on content of file object

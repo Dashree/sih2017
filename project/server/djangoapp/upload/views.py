@@ -10,17 +10,18 @@ from django.contrib.auth.decorators import login_required
 from exam.models import ExamInfo
 from .models import ScannedImage
 from .forms import DocumentForm
+from exam import models 
 
 
 @require_GET
 @login_required
-def file_list(request):
+def scanned_list(request, uid):
     '''
     show list of uploaded file.
     '''
     form = DocumentForm()  # A empty, unbound form
     # Load documents for the list page
-    documents = ScannedImage.objects.all()
+    documents = ScannedImage.objects.filter(userid = uid)
     #assert len(documents) > 0
     # Render list page with the documents and the form
     return render(
@@ -31,12 +32,15 @@ def file_list(request):
 
 @require_POST
 @login_required
-def upload_file(request):
+def upload_file(request,exmid,stdid):
     '''
     upload single file
     '''
+    exam = ExamInfo.objects.get(id = exmid)
+    student = StudentInfo.objects.get(id = stdid)
+    
     if 'file' in request.FILES:
-        scannedimage = ScannedImage(docfile=request.FILES['file'])
+        scannedimage = ScannedImage(docfile=request.FILES['file'],examid = exam,studentid = student)
         scannedimage.full_clean()
         scannedimage.save()
 
