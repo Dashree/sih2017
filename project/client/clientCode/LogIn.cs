@@ -57,9 +57,10 @@ namespace client
         {
              if (login(userNameBox.Text, this.passwordBox.Text) == true)
             {
+                string value = GetTimestamp(DateTime.Now);
                 label3.Visible = false;
                 this.Hide();
-                FileUpload upload = new FileUpload(this.serverUrl, webclient);
+                FileUpload upload = new FileUpload(this.serverUrl, webclient, value);
               
                 upload.Show();
              }

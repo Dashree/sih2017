@@ -32,8 +32,8 @@ namespace client
         private int i = 0;
         private FileStream statusStream;
         private StreamWriter statusWriter;
-
-        public FileUpload(string serverUrl, WebClient webclient)
+        private string loginTime;
+        public FileUpload(string serverUrl, WebClient webclient, string lgTime)
         {
             InitializeComponent();
             this.uploadUrl = serverUrl + this.cUploadUrl;
@@ -43,6 +43,7 @@ namespace client
             // For testing copy the images to this directory.
             // this.ImgeFolder.Text = cImageListPath;
             this.client = webclient;
+            this.loginTime = lgTime;
         }
 
         private void FileUpload_Load(object sender, EventArgs e)
@@ -175,7 +176,6 @@ namespace client
                 QRCodeReader reader = new QRCodeReader();
                 Result qrDecode = reader.decode(imgBinarybmp);
                 String qrExamId = qrDecode.ToString();
-                MessageBox.Show(qrExamId);
                 if (String.Compare(qrExamId, ExamIdTxt.Text) == 0)
                     foundExamId = true;
             }
@@ -289,27 +289,16 @@ namespace client
             string dummyStudentId = DateTime.Now.ToString("yyyyMMddHHmmss");
             return dummyStudentId;
         }
-    
 
-        //private bool Retry()
-        //{
-        //    Button button2 = new Button();
-        //    button2.Location = new Point(90, 155 + x);
-        //    button2.Height = 60;
-        //    button2.Width = 60;
-        //    x = x + 80;
-        //    button2.Text = "Retry";
-        //    if (button2.Click)
-        //        return true;
-        //    return false;
-        //}
         private void StartUploadClick(object sender, EventArgs e)
         {
+           
             StatusFile = AppendTimeStamp(path);
             StatusFile = ImgeFolder.Text + "/" + StatusFile;
             this.statusStream = File.Open(StatusFile, FileMode.Create, FileAccess.ReadWrite);
             this.statusWriter= new StreamWriter(this.statusStream);
 
+            SaveStatus("LogIn Time:" + loginTime);
             SaveStatus("OMR Sheet Upload Status");
 
             String UploadTimeStamp = GetTimestamp(DateTime.Now);
