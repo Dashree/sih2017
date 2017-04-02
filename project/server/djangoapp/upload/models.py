@@ -21,7 +21,7 @@ class ScannedImage(models.Model):
     hashval = models.CharField(max_length=128, null=False, blank=False,editable=False,db_index=True, unique=True)
     imgsize =  models.IntegerField(editable=False)
     studentid = models.ForeignKey(StudentInfo, null=True, blank=True)
-    session = models.ForeignKey(OMR_Session, null=False, editable=False)
+    session = models.ForeignKey(OMR_Session, null=True, editable=False,blank=True)
     examid = models.ForeignKey(ExamInfo,null=True, blank=True)
     processed = models.CharField(max_length=1, choices = PROCESSED_CHOICES, default='U')
 

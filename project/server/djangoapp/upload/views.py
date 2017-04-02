@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
-from exam.models import ExamInfo
+from exam.models import ExamInfo, StudentInfo
 from .models import ScannedImage
 from .forms import DocumentForm
 from exam import models 
@@ -53,7 +53,8 @@ def upload_file(request,examcode,stdrollno):
     student = StudentInfo.objects.get_or_create(rollno = stdrollno)
     
     if 'file' in request.FILES:
-        scannedimage = ScannedImage(docfile=request.FILES['file'], session=request.session['omrsession'])
+        session = OMR_Session.objects.get(id=request.session['omrsession'])
+        scannedimage = ScannedImage(docfile=request.FILES['file'], session=session)
         scannedimage.full_clean()
         scannedimage.save()
 
