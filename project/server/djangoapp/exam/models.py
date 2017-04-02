@@ -8,6 +8,12 @@ class AnswersheetTemplate(models.Model):        #section of templates
     centrecodesect = models.FileField(models.Model)
     answercolumnsect = models.FileField(models.Model)
     completetemplate = models.FileField(models.Model)
+    rollx = models.IntegerField(models.Model)
+    rolly = models.IntegerField(models.Model)
+    centrex = models.IntegerField(models.Model)
+    centrey = models.IntegerField(models.Model)
+    answercolumnx = models.IntegerField(models.Model)
+    answercolumny = models.IntegerField(models.Model)
 
 class ExamInfo(models.Model):
     examcode = models.CharField(max_length=100, unique=True)

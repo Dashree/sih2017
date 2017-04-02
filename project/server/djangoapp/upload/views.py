@@ -19,7 +19,6 @@ def scanned_list(request, uid):
     '''
     show list of uploaded file.
     '''
-    form = DocumentForm()  # A empty, unbound form
     # Load documents for the list page
     documents = ScannedImage.objects.filter(userid = uid)
     #assert len(documents) > 0
@@ -27,7 +26,7 @@ def scanned_list(request, uid):
     return render(
        request,
         'list.html',
-        {'documents': documents, 'form': form}
+        {'documents': documents}
     )
 
 @require_POST
