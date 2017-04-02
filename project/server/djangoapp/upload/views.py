@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import ScannedImage
-from exam.models import AnswerSheetMarks, AnswersheetTemplate, ExamInfo, StudentInfo
+from exam.models import AnswerSheetMarks, ExamInfo, StudentInfo
 from django.template import RequestContext
 from django.http import HttpResponseRedirect,HttpResponseNotFound,JsonResponse
 from django.core.urlresolvers import reverse

@@ -18,9 +18,9 @@ class AnswersheetTemplate(models.Model):        #section of templates
 class ExamInfo(models.Model):
     examcode = models.CharField(max_length=100, unique=True)
     exam_name = models.CharField(max_length=100, unique=True)
-    modelanstemplate = models.FileField(null= True)     #check for address storing field
+    modelanstemplate = models.FileField(upload_to = 'examdocs', null= True)     #check for address storing field
     exam_date = models.DateField(null =True)
-    templateinfo = models.ForeignKey(AnswersheetTemplate)
+    #mastertemplate = models.FileField(upload_to = 'media', null = True)
 
 #This table contains the basic and original student information.
 class StudentInfo(models.Model):
