@@ -33,8 +33,6 @@ namespace client
 
         private bool login(string username, string password)
         {
-            MessageBox.Show(username);
-            MessageBox.Show(password);
             NameValueCollection login_params = new NameValueCollection();
             login_params.Add("username", username);
             login_params.Add("password", password);
