@@ -146,7 +146,7 @@ namespace client
             lbl.Location = new Point(100, 210 + y);
             y = y + 80;
             lbl.AutoSize = true;
-            if (response == "true")
+            if (response == "True")
             {
                 countUploaded++;
                 lbl.Text = imgname + " : Image Uploaded Successfully";
@@ -289,7 +289,6 @@ namespace client
                             string studentid = getStudentId(imgpath);
                             
                             bool ResponseUpload = this.UploadImage(this.client, studentid, imgpath);
-                            MessageBox.Show(ResponseUpload.ToString());
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus(ResponseUpload.ToString(), FileName);// create label and display on form
