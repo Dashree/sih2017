@@ -14,3 +14,5 @@ project/client/packages/ZXing.2.1.1/
 project/client/packages/MessagingToolkit.QRCode.1.3.0/
 *.orig
 migrations/
+dump.rdb
+
