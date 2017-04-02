@@ -1,0 +1,1 @@
+[{"model": "exam.examinfo", "pk": 2, "fields": {"examcode": "exam1", "exam_name": "Xgen", "modelanstemplate": "examdocs/matlab.mat", "exam_date": "2017-02-04"}}]
