@@ -22,7 +22,7 @@ namespace client
         public object BarcodeType { get; private set; }
         private string collegeName, examcode;
         private string StatusFile;
-        private string cUploadUrl = "/upload/file/";
+        private string cUploadUrl = "/upload/file/{0}/{1}/";
         private string cHash = "/upload/hash/";
         private string path = @"c:\temp\uploadStatus.txt";
         private String uploadUrl;
@@ -99,9 +99,10 @@ namespace client
             return response.IndexOf("true") >= 0;
         }
 
-        private bool UploadImage(WebClient webclient, string filePath)
+        private bool UploadImage(WebClient webclient, string studentid, string filePath)
         {
-            byte[] serverResponse = webclient.UploadFile(this.uploadUrl, filePath);
+            string url = String.Format(this.uploadUrl, ExamIdTxt.Text, studentid);
+            byte[] serverResponse = webclient.UploadFile(url, filePath);
             //string response = System.Text.Encoding.UTF8.GetString(serverResponse);
             return true;
 
@@ -281,6 +282,13 @@ namespace client
 
         }
 
+        private string getStudentId(string imgpath)
+        {
+            string dummyStudentId = DateTime.Now.ToString("yyyyMMddHHmmss");
+            return dummyStudentId;
+        }
+    
+
         //private bool Retry()
         //{
         //    Button button2 = new Button();
@@ -323,7 +331,8 @@ namespace client
                         bool hashServer = IsHashAtServer(this.client, hash);
                         if (hashServer == false)
                         {
-                            this.UploadImage(this.client, imgpath);
+                            string studentid = getStudentId(imgpath);
+                            this.UploadImage(this.client, studentid, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
                             string data = UploadStatus("true", FileName);// create label and display on form

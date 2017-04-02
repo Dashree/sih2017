@@ -18,7 +18,6 @@ namespace client
         string serverUrl = "http://localhost:8000";
         string loginUrl = "/user/login/";
      
-
         WebClient webclient = new CookieAwareWebClient();
         public LogIn()
         {
@@ -26,10 +25,10 @@ namespace client
             this.serverUrl = serverUrl;
             this.loginUrl = this.serverUrl + this.loginUrl;
         }
-        //public static String GetTimestamp(DateTime value)
-        //{
-        //    return value.ToString("yyyy/MM/dd/  HH:mm:ss");
-        //}
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyy/MM/dd/  HH:mm:ss");
+        }
 
         private bool login(string username, string password)
         {
@@ -67,6 +66,7 @@ namespace client
             else
             {
                 label3.Visible = true;
+                passwordBox.Clear();
             }
         }
 
