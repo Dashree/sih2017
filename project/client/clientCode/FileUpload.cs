@@ -259,7 +259,9 @@ namespace client
             this.statusStream.Close();
             Process process;
             process = Process.Start(statusfile);
-            process.WaitForExit();
+            //Done with uploading... Exit now.
+            System.Windows.Forms.Application.Exit();
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -373,9 +375,6 @@ namespace client
                 }
             }
             
-            
-            //Done with uploading... Exit now.
-         //  System.Windows.Forms.Application.Exit();
         }
     }
 }
