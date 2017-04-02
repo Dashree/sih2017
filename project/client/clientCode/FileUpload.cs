@@ -186,51 +186,6 @@ namespace client
             return foundExamId;
         }
 
-        /*
-         [NITIN] This function has somewhat confusing logic. I am keeping it for
-         * reference. To be deleted later.
-        private void Files_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog openFolder1 = new FolderBrowserDialog();
-            if (openFolder1.ShowDialog() == DialogResult.OK)
-            {
-
-                string folderPath = openFolder1.SelectedPath;
-                string[] Images = Directory.GetFiles(folderPath, "*.jpg"); //returns a file list from current directory
-                MessageBox.Show(Images.Length.ToString());
-                foreach (string img in Images)
-                {
-                    FileInfo path = new FileInfo(img.ToString());
-                    string FilePath = path.FullName;
-                    string FileName = Path.GetFileNameWithoutExtension(FilePath);
-                    bool Qr = QRCodeScan(FilePath);
-                    if (Qr == true)
-                    {
-                        //Read Image File into Image object.
-                        //Image image = Image.FromFile(FilePath);
-
-                        //ImageConverter Class convert Image object to Byte array.
-                       //byte[] bytes = (byte[])(new ImageConverter()).ConvertTo(image, typeof(byte[]));
-                       byte[] hash = Hash_Compute(FilePath);
-                       //byte[] hash = Hash_Compute(image);
-                      //byte[] hash = Hash_Compute(bytes);
-                        bool uploadResponse = UploadInfo(FilePath, FileName, hash);// sends the hash code and if it is not found image is uploaded
-                        if (uploadResponse == true)// if uploaded image will be added
-                            button(FilePath);
-                    }
-
-                    //UploadInfo(FilePath, FileName);
-                    //send hash to server
-                    //if at server skip file
-                    //else call button() and uploadInfo()
-                }
-
-
-
-            }
-        }
-        */
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             collegeName = CollegeIdTxt.Text;
@@ -323,6 +278,7 @@ namespace client
                         if (hashServer == false)
                         {
                             string studentid = getStudentId(imgpath);
+                            
                             this.UploadImage(this.client, studentid, imgpath);
                             button(imgpath);
                             string FileName = Path.GetFileNameWithoutExtension(imgpath);
