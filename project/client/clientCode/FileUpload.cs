@@ -154,25 +154,14 @@ namespace client
         }
         private void SaveStatus(string data)
         {
-            //This text is added only once to the file.
-            //if (!File.Exists(FilePath))
-            //{
-            //    string Text = data + Environment.NewLine;
-            //    File.WriteAllText(FilePath, Text);
-
-            //}
-            //else
-            //{
-            //    string appendText = data + Environment.NewLine;
-            //    File.AppendAllText(FilePath, appendText);
-            //}
             this.statusWriter.WriteLine(data);
-            
         }
+
         public static String GetTimestamp(DateTime value)
         {
             return value.ToString("yyyy/MM/dd  HH:mm:ss");
         }
+
         private bool IsExamIdFoundInQRCode(string imagepath, string examid)
         {
             bool foundExamId = false;
@@ -189,7 +178,7 @@ namespace client
                 if (String.Compare(qrExamId, ExamIdTxt.Text) == 0)
                     foundExamId = true;
             }
-            catch
+            catch (Exception exp)
             {
                 foundExamId = false;
             }
