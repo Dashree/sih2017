@@ -59,11 +59,4 @@ def login_user(request):
             return render(request, 'login.html', {'error_message': 'Invalid login'},status=401)
     return render(request, 'login.html')
 
-#   Getting IP address of the client
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+
